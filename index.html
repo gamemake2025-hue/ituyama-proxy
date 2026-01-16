@@ -87,12 +87,12 @@
     <div class="btn-box" onclick="go()">サイトに行く</div>
 
     <p style="margin-top: 2rem; font-size: 1.2rem; color: #aaa;">
-      新分頁會顯示 about:blank，內容透過 iframe 載入（網址列盡量保持空白）
+      提示：輸入 youtube.com 進入主頁後，再用 YouTube 自己的搜尋欄搜尋，就能正常使用！
     </p>
   </div>
 
   <script>
-    // 產生粒子
+    // 產生粒子（維持原樣）
     const starsContainer = document.getElementById('stars');
     for (let i = 0; i < 120; i++) {
       const star = document.createElement('div');
@@ -106,47 +106,24 @@
       starsContainer.appendChild(star);
     }
 
+    // 核心：使用 location.replace() 不留中間歷史記錄
     function go() {
       const input = document.querySelector('input');
       let raw = input.value.trim();
-      if (!raw) return alert('URLを入力してください');
 
+      if (!raw) {
+        alert('URLを入力してください');
+        return;
+      }
+
+      // 自動補 https://
       let url = raw.startsWith('http') ? raw : 'https://' + raw;
 
-      // 開啟真正的 about:blank 分頁
-      const newTab = window.open('about:blank', '_blank');
-
-      if (newTab) {
-        // 延遲一點，讓 about:blank 先出現明顯
-        setTimeout(() => {
-          // 在空白分頁裡寫入全屏 iframe（網址列保持 about:blank）
-          newTab.document.open();
-          newTab.document.write(`
-            <!DOCTYPE html>
-            <html lang="ja">
-            <head>
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <title>Google</title>
-              <link rel="icon" href="https://www.google.com/favicon.ico">
-              <style>
-                body { margin:0; padding:0; background:#000; overflow:hidden; }
-                iframe { width:100vw; height:100vh; border:none; }
-              </style>
-            </head>
-            <body>
-              <iframe src="https://ituyama-proxy.onrender.com/${url}" allowfullscreen></iframe>
-            </body>
-            </html>
-          `);
-          newTab.document.close();
-        }, 500);  // 0.5秒延遲，可調大到 2000~5000 讓空白更明顯
-      } else {
-        alert('無法開新分頁，請允許彈出視窗（點擊瀏覽器允許）');
-      }
+      // 關鍵這一行：取代當前歷史記錄，不新增新條目
+      window.location.replace('https://ituyama-proxy.onrender.com/' + url);
     }
 
-    // Enter 鍵觸發
+    // Enter 鍵也觸發
     document.querySelector('input').addEventListener('keydown', e => {
       if (e.key === 'Enter') {
         e.preventDefault();
