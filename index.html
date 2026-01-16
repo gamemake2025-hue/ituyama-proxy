@@ -11,7 +11,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&display=swap" rel="stylesheet"/>
 
   <style>
-    /* 你的粒子 + 藍色光暈樣式維持不變 */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       height: 100vh;
@@ -76,19 +75,19 @@
   <div class="stars" id="stars"></div>
 
   <div class="container">
-    <h1>ITUYAMAMA　PROXY</h1>
+    <h1>ITUYAMAMA PROXY</h1>
 
     <input 
       type="text" 
       class="input-box" 
-      placeholder="URLを入力してください" 
+      placeholder="URLを入力してください（例：youtube.com）" 
       autofocus
     />
 
     <div class="btn-box" onclick="go()">サイトに行く</div>
 
     <p style="margin-top: 2rem; font-size: 1.2rem; color: #aaa;">
-      
+      提示：跳轉會在新分頁開啟（短暫顯示 about:blank），當前分頁完全不變！
     </p>
   </div>
 
@@ -107,9 +106,11 @@
       starsContainer.appendChild(star);
     }
 
+    // 改成新分頁開啟（會出現 about:blank 短暫畫面）
     function go() {
       const input = document.querySelector('input');
       let raw = input.value.trim();
+
       if (!raw) {
         alert('URLを入力してください');
         return;
@@ -118,10 +119,11 @@
       // 自動補 https://
       let url = raw.startsWith('http') ? raw : 'https://' + raw;
 
-      // 使用 replace() 不留中間歷史記錄
-      window.location.replace('https://ituyama-proxy.onrender.com/' + url);
+      // 關鍵：新分頁開啟代理內容
+      window.open('https://ituyama-proxy.onrender.com/' + url, '_blank');
     }
 
+    // Enter 鍵也觸發
     document.querySelector('input').addEventListener('keydown', e => {
       if (e.key === 'Enter') {
         e.preventDefault();
