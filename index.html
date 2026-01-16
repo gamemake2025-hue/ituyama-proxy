@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PROXY GATEWAY</title>
+  <title>ITUYAMA-PROXY</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
     body {
       margin: 0;
       padding: 0;
       background: #000000;
       color: #ffffff;
-      font-family: 'VT323', monospace;
-      font-size: 1.8rem;
+      font-family: 'Noto Sans JP', sans-serif;
       height: 100vh;
       display: flex;
       align-items: center;
@@ -21,100 +20,97 @@
     }
     .container {
       text-align: center;
-      width: 90%;
-      max-width: 1400px;
-      padding: 4rem;
+      max-width: 800px;
+      padding: 2rem;
     }
     h1 {
-      font-size: 5.5rem;
-      margin-bottom: 3rem;
-      letter-spacing: 8px;
-      text-shadow: 0 0 20px rgba(255,255,255,0.4);
+      font-size: 4.8rem;
+      margin-bottom: 2.5rem;
+      text-shadow: 0 0 30px #00aaff, 0 0 60px #00aaff;
+      letter-spacing: 6px;
+      color: #ffffff;
     }
-    input, button {
-      font-family: 'VT323', monospace;
-      font-size: 2.4rem;
+    input {
+      width: 80%;
+      max-width: 700px;
+      padding: 1.2rem;
+      font-size: 1.8rem;
       background: #111111;
       color: #ffffff;
-      border: 2px solid #ffffff;
-      padding: 1.2rem 1.8rem;
+      border: 2px solid #333333;
+      border-radius: 8px;
       outline: none;
-      width: 70%;
-      max-width: 1000px;
-      margin: 2rem auto;
-      display: block;
-      box-sizing: border-box;
+      margin: 1.2rem 0;
     }
     input:focus {
-      box-shadow: 0 0 30px rgba(255,255,255,0.4);
+      border-color: #00aaff;
+      box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
     }
     button {
-      cursor: pointer;
+      width: 80%;
+      max-width: 700px;
+      padding: 1.2rem;
+      font-size: 2rem;
       background: #000000;
-      border-color: #ffffff;
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 1.2rem 0;
+      transition: all 0.3s;
     }
     button:hover {
       background: #222222;
-      box-shadow: 0 0 35px rgba(255,255,255,0.5);
+      box-shadow: 0 0 15px rgba(255,255,255,0.3);
     }
-    .examples {
-      margin-top: 5rem;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
+    .shortcuts {
+      margin-top: 3rem;
+      display: flex;
+      justify-content: center;
       gap: 3rem;
-      max-width: 1000px;
-      margin-left: auto;
-      margin-right: auto;
     }
-    .example-item {
+    .shortcut {
+      width: 220px;
+      padding: 1rem;
       background: #111111;
-      padding: 2rem;
-      border: 2px solid #444444;
-      border-radius: 15px;
+      color: #ffffff;
+      border: 2px solid #333333;
+      border-radius: 8px;
       cursor: pointer;
+      font-size: 1.8rem;
       transition: all 0.3s;
-      font-size: 3rem;
-      text-align: center;
     }
-    .example-item:hover {
+    .shortcut:hover {
       border-color: #ffffff;
-      box-shadow: 0 0 40px rgba(255,255,255,0.5);
-      transform: translateY(-15px);
+      box-shadow: 0 0 15px rgba(255,255,255,0.3);
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>PROXY GATEWAY</h1>
+    <h1>ITUYAMA-PROXY</h1>
     
-    <input id="urlInput" type="text" placeholder="輸入域名 (e.g. youtube.com)" autofocus>
+    <input id="urlInput" type="text" placeholder="URLを入力してください" autofocus>
     
-    <button onclick="goToSite()">EXECUTE CONNECT</button>
+    <button onclick="goToSite()">サイトに行く</button>
 
-    <div class="examples">
-      <div class="example-item" onclick="loadExample('youtube.com')">youtube.com</div>
-      <div class="example-item" onclick="loadExample('poki.com')">poki.com</div>
-      <div class="example-item" onclick="loadExample('netflix.com')">netflix.com</div>
-      <div class="example-item" onclick="loadExample('web.cloudmoonapp.com')">cloudmoon</div>
+    <div class="shortcuts">
+      <div class="shortcut" onclick="loadExample('youtube.com')">youtube</div>
+      <div class="shortcut" onclick="loadExample('poki.com')">poki</div>
     </div>
   </div>
 
   <script>
     function goToSite() {
-      const input = document.getElementById('urlInput');
-      let raw = input.value.trim();
-      if (!raw) {
-        alert('請輸入域名 (e.g. youtube.com)');
-        return;
-      }
+      let raw = document.getElementById('urlInput').value.trim();
+      if (!raw) return alert('URLを入力してください');
 
       let url = raw;
       if (!url.startsWith('http://') && !url.startsWith('https://')) {
         url = 'https://' + raw;
       }
 
-      const proxyUrl = 'https://ituyama-proxy.onrender.com/' + url;
-      window.location.href = proxyUrl;
+      window.location.href = 'https://ituyama-proxy.onrender.com/' + url;
     }
 
     function loadExample(domain) {
@@ -126,30 +122,6 @@
       if (e.key === 'Enter') {
         e.preventDefault();
         goToSite();
-      }
-    });
-
-    // 連按三下 Space 鍵跳 Google Classroom
-    let spaceCount = 0;
-    let lastSpaceTime = 0;
-    document.addEventListener('keydown', e => {
-      if (e.key === ' ') {
-        e.preventDefault();
-        const currentTime = Date.now();
-
-        if (currentTime - lastSpaceTime < 500) {
-          spaceCount++;
-          if (spaceCount >= 3) {
-            window.location.href = 'https://classroom.google.com/';
-            spaceCount = 0;
-          }
-        } else {
-          spaceCount = 1;
-        }
-
-        lastSpaceTime = currentTime;
-      } else {
-        spaceCount = 0;
       }
     });
   </script>
