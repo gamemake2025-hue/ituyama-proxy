@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITUYAMA-PROXY</title>
+  <title>Google</title> <!-- 永遠顯示 Google -->
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
     body {
@@ -20,69 +20,50 @@
     }
     .container {
       text-align: center;
-      max-width: 800px;
-      padding: 2rem;
+      max-width: 900px;
+      padding: 3rem;
     }
     h1 {
-      font-size: 4.8rem;
-      margin-bottom: 2.5rem;
-      text-shadow: 0 0 30px #00aaff, 0 0 60px #00aaff;
-      letter-spacing: 6px;
+      font-size: 5.5rem;
+      margin-bottom: 3rem;
+      text-shadow: 0 0 30px #00aaff, 0 0 60px #00aaff, 0 0 90px #00aaff;
+      letter-spacing: 8px;
       color: #ffffff;
     }
     input {
-      width: 80%;
-      max-width: 700px;
-      padding: 1.2rem;
-      font-size: 1.8rem;
+      width: 90%;
+      max-width: 800px;
+      padding: 1.5rem;
+      font-size: 2.2rem;
       background: #111111;
       color: #ffffff;
       border: 2px solid #333333;
       border-radius: 8px;
       outline: none;
-      margin: 1.2rem 0;
+      margin: 1.5rem 0;
+      text-shadow: 0 0 10px rgba(255,255,255,0.5);
     }
     input:focus {
       border-color: #00aaff;
-      box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
+      box-shadow: 0 0 30px rgba(0, 170, 255, 0.6);
     }
     button {
-      width: 80%;
-      max-width: 700px;
-      padding: 1.2rem;
-      font-size: 2rem;
+      width: 90%;
+      max-width: 800px;
+      padding: 1.5rem;
+      font-size: 2.5rem;
       background: #000000;
       color: #ffffff;
       border: 2px solid #ffffff;
       border-radius: 8px;
       cursor: pointer;
-      margin: 1.2rem 0;
+      margin: 1.5rem 0;
       transition: all 0.3s;
+      text-shadow: 0 0 10px rgba(255,255,255,0.5);
     }
     button:hover {
       background: #222222;
-      box-shadow: 0 0 15px rgba(255,255,255,0.3);
-    }
-    .shortcuts {
-      margin-top: 3rem;
-      display: flex;
-      justify-content: center;
-      gap: 3rem;
-    }
-    .shortcut {
-      width: 220px;
-      padding: 1rem;
-      background: #111111;
-      color: #ffffff;
-      border: 2px solid #333333;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1.8rem;
-      transition: all 0.3s;
-    }
-    .shortcut:hover {
-      border-color: #ffffff;
-      box-shadow: 0 0 15px rgba(255,255,255,0.3);
+      box-shadow: 0 0 30px rgba(255,255,255,0.4);
     }
   </style>
 </head>
@@ -93,14 +74,12 @@
     <input id="urlInput" type="text" placeholder="URLを入力してください" autofocus>
     
     <button onclick="goToSite()">サイトに行く</button>
-
-    <div class="shortcuts">
-      <div class="shortcut" onclick="loadExample('youtube.com')">youtube</div>
-      <div class="shortcut" onclick="loadExample('poki.com')">poki</div>
-    </div>
   </div>
 
   <script>
+    // 永遠強制分頁標題為 Google
+    document.title = 'Google';
+
     function goToSite() {
       let raw = document.getElementById('urlInput').value.trim();
       if (!raw) return alert('URLを入力してください');
@@ -113,11 +92,7 @@
       window.location.href = 'https://ituyama-proxy.onrender.com/' + url;
     }
 
-    function loadExample(domain) {
-      document.getElementById('urlInput').value = domain;
-      goToSite();
-    }
-
+    // Enter 鍵觸發
     document.getElementById('urlInput').addEventListener('keydown', e => {
       if (e.key === 'Enter') {
         e.preventDefault();
