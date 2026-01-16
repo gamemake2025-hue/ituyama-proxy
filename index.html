@@ -28,11 +28,7 @@
     h1 {
       font-size: 5.5rem;
       margin-bottom: 3.5rem;
-      text-shadow: 
-        0 0 20px #00aaff,
-        0 0 40px #00aaff,
-        0 0 80px #00aaff,
-        0 0 120px #00aaff;
+      text-shadow: 0 0 30px #00aaff, 0 0 60px #00aaff, 0 0 100px #00aaff;
       letter-spacing: 12px;
       animation: glow 4s infinite alternate;
     }
@@ -45,17 +41,11 @@
       border: 2px solid #00aaff;
       border-radius: 12px;
       margin: 1.8rem 0;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 
-        0 0 30px #00aaff,
-        inset 0 0 20px rgba(0,170,255,0.4);
+      box-shadow: 0 0 40px #00aaff;
       transition: all 0.4s;
     }
     .input-box:hover, .btn-box:hover {
-      box-shadow: 
-        0 0 60px #00aaff,
-        inset 0 0 40px rgba(0,170,255,0.6);
+      box-shadow: 0 0 70px #00aaff;
       transform: translateY(-6px);
     }
     input {
@@ -66,14 +56,12 @@
       font-size: 2.4rem;
       outline: none;
       text-align: center;
-      text-shadow: 0 0 10px #00aaff;
     }
     .btn-box {
       cursor: pointer;
       font-weight: bold;
-      text-shadow: 0 0 10px #00aaff;
     }
-    /* 粒子效果 */
+    /* 藍色粒子效果（60顆，全動，小點） */
     .particles {
       position: absolute;
       inset: 0;
@@ -83,15 +71,16 @@
     .particle {
       position: absolute;
       border-radius: 50%;
-      background: linear-gradient(45deg, #00aaff, #3399ff, #aa88ff, #cc99ff);
-      box-shadow: 0 0 15px currentColor, 0 0 30px currentColor;
-      animation: move 12s linear infinite, twinkle 3s ease-in-out infinite;
+      background: #00aaff;
+      box-shadow: 0 0 12px #00aaff, 0 0 25px #00aaff;
+      animation: move 12s linear infinite, twinkle 2.8s ease-in-out infinite;
+      opacity: 0.6;
     }
     @keyframes move {
       0%   { transform: translate(0, 0); }
-      25%  { transform: translate(calc(150vw * var(--dir-x)), calc(150vh * var(--dir-y))); }
-      50%  { transform: translate(calc(150vw * var(--dir-x) * -1), calc(150vh * var(--dir-y) * -1)); }
-      75%  { transform: translate(calc(150vw * var(--dir-x)), calc(150vh * var(--dir-y))); }
+      25%  { transform: translate(calc(150vw * var(--dx)), calc(150vh * var(--dy))); }
+      50%  { transform: translate(calc(150vw * var(--dx) * -1), calc(150vh * var(--dy) * -1)); }
+      75%  { transform: translate(calc(150vw * var(--dx)), calc(150vh * var(--dy))); }
       100% { transform: translate(0, 0); }
     }
     @keyframes twinkle {
@@ -100,7 +89,7 @@
     }
     @keyframes glow {
       from { text-shadow: 0 0 30px #00aaff; }
-      to   { text-shadow: 0 0 120px #00aaff; }
+      to   { text-shadow: 0 0 100px #00aaff; }
     }
   </style>
 </head>
@@ -119,39 +108,32 @@
 
   <script>
     const particlesContainer = document.getElementById('particles');
-    
-    // 產生約 150 顆粒子
-    for (let i = 0; i < 150; i++) {
+
+    // 產生 60 顆純藍色小粒子，全動
+    for (let i = 0; i < 60; i++) {
       const p = document.createElement('div');
       p.className = 'particle';
-      
-      // 隨機大小 4~8px
-      const size = 4 + Math.random() * 4;
+
+      // 小粒子大小 2.5~4px
+      const size = 2.5 + Math.random() * 1.5;
       p.style.width = size + 'px';
       p.style.height = size + 'px';
-      
+
       // 隨機初始位置
       p.style.left = Math.random() * 100 + 'vw';
       p.style.top = Math.random() * 100 + 'vh';
-      
-      // 隨機顏色（藍 ~ 淡紫）
-      const colors = ['#00aaff', '#33ccff', '#66ddff', '#aa88ff', '#bb99ff', '#cc99ff'];
-      p.style.background = colors[Math.floor(Math.random() * colors.length)];
-      
-      // 隨機亮度
-      p.style.opacity = 0.25 + Math.random() * 0.75;
-      
+
       // 隨機移動方向（正負）
-      const dirX = Math.random() > 0.5 ? 1 : -1;
-      const dirY = Math.random() > 0.5 ? 1 : -1;
-      p.style.setProperty('--dir-x', dirX);
-      p.style.setProperty('--dir-y', dirY);
-      
-      // 隨機動畫時長與延遲
-      const duration = 8 + Math.random() * 6; // 8~14秒
-      p.style.animationDuration = duration + 's, ' + (2.5 + Math.random() * 2) + 's';
+      const dx = Math.random() > 0.5 ? 1 : -1;
+      const dy = Math.random() > 0.5 ? 1 : -1;
+      p.style.setProperty('--dx', dx);
+      p.style.setProperty('--dy', dy);
+
+      // 隨機動畫時長與延遲（確保流暢）
+      const duration = 10 + Math.random() * 8; // 10~18秒，緩慢漂移
+      p.style.animationDuration = duration + 's, ' + (2.5 + Math.random() * 1.5) + 's';
       p.style.animationDelay = Math.random() * duration + 's, ' + Math.random() * 3 + 's';
-      
+
       particlesContainer.appendChild(p);
     }
 
@@ -162,7 +144,7 @@
 
       let url = raw.startsWith('http') ? raw : 'https://' + raw;
       
-      // 使用 replace 方式跳轉，盡量不產生新歷史記錄
+      // 使用 replace 完全不留歷史記錄（不會出現 youtube、netflix 等）
       window.location.replace('https://ituyama-proxy.onrender.com/' + url);
     }
 
