@@ -61,7 +61,7 @@
       cursor: pointer;
       font-weight: bold;
     }
-    /* 藍色粒子效果（60顆，全動，小點） */
+    /* 藍色粒子效果（50顆，全動，小點，無大小變化） */
     .particles {
       position: absolute;
       inset: 0;
@@ -70,11 +70,13 @@
     }
     .particle {
       position: absolute;
-      border-radius: 50%;
+      width: 3px;
+      height: 3px;
       background: #00aaff;
+      border-radius: 50%;
       box-shadow: 0 0 12px #00aaff, 0 0 25px #00aaff;
-      animation: move 12s linear infinite, twinkle 2.8s ease-in-out infinite;
-      opacity: 0.6;
+      animation: move 12s linear infinite, twinkle 3s ease-in-out infinite;
+      opacity: 0.7;
     }
     @keyframes move {
       0%   { transform: translate(0, 0); }
@@ -84,8 +86,8 @@
       100% { transform: translate(0, 0); }
     }
     @keyframes twinkle {
-      0%, 100% { opacity: 0.3; transform: scale(0.7); }
-      50%      { opacity: 1; transform: scale(1.5); }
+      0%, 100% { opacity: 0.4; }
+      50%      { opacity: 1; }
     }
     @keyframes glow {
       from { text-shadow: 0 0 30px #00aaff; }
@@ -114,10 +116,9 @@
       const p = document.createElement('div');
       p.className = 'particle';
 
-      // 小粒子大小 2.5~4px
-      const size = 2.5 + Math.random() * 1.5;
-      p.style.width = size + 'px';
-      p.style.height = size + 'px';
+      // 固定小大小 3px
+      p.style.width = '3px';
+      p.style.height = '3px';
 
       // 隨機初始位置
       p.style.left = Math.random() * 100 + 'vw';
@@ -131,7 +132,7 @@
 
       // 隨機動畫時長與延遲（確保流暢）
       const duration = 10 + Math.random() * 8; // 10~18秒，緩慢漂移
-      p.style.animationDuration = duration + 's, ' + (2.5 + Math.random() * 1.5) + 's';
+      p.style.animationDuration = duration + 's, ' + (2.8 + Math.random() * 1.2) + 's';
       p.style.animationDelay = Math.random() * duration + 's, ' + Math.random() * 3 + 's';
 
       particlesContainer.appendChild(p);
@@ -143,7 +144,7 @@
       if (!raw) return alert('URLを入力してください');
 
       let url = raw.startsWith('http') ? raw : 'https://' + raw;
-      
+
       // 使用 replace 完全不留歷史記錄（不會出現 youtube、netflix 等）
       window.location.replace('https://ituyama-proxy.onrender.com/' + url);
     }
