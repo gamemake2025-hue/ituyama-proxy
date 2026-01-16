@@ -68,6 +68,9 @@
     .btn-box { cursor: pointer; font-weight: bold; color: white; }
     .btn-box:hover { transform: translateY(-6px); box-shadow: 0 0 60px rgba(0,196,255,0.9), inset 0 0 40px rgba(0,196,255,0.55); }
     @keyframes glow { from { text-shadow: 0 0 20px #00c4ff; } to { text-shadow: 0 0 80px #00c4ff; } }
+
+    /* 載入提示（可選） */
+    .loading { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #00c4ff; font-size: 2rem; z-index: 10000; display: none; }
   </style>
 </head>
 <body>
@@ -75,7 +78,7 @@
   <div class="stars" id="stars"></div>
 
   <div class="container">
-    <h1>ITUYAMAMA PROXY</h1>
+    <h1>ITUYUYAMAMA-PROXY</h1>
 
     <input 
       type="text" 
@@ -87,12 +90,15 @@
     <div class="btn-box" onclick="go()">サイトに行く</div>
 
     <p style="margin-top: 2rem; font-size: 1.2rem; color: #aaa;">
-      提示：跳轉會在新分頁開啟（短暫顯示 about:blank），當前分頁完全不變！
+      跳轉會在新分頁開啟，先顯示 about:blank，然後載入內容（網址列會盡量保持空白）
     </p>
   </div>
 
+  <!-- 載入提示（可選） -->
+  <div class="loading" id="loading">載入中... 請稍候</div>
+
   <script>
-    // 產生粒子（維持原樣）
+    // 產生粒子
     const starsContainer = document.getElementById('stars');
     for (let i = 0; i < 120; i++) {
       const star = document.createElement('div');
@@ -106,24 +112,52 @@
       starsContainer.appendChild(star);
     }
 
-    // 改成新分頁開啟（會出現 about:blank 短暫畫面）
+    // 核心：開新分頁 + 先顯示 about:blank + 用 iframe 載入（網址列盡量保持）
     function go() {
       const input = document.querySelector('input');
       let raw = input.value.trim();
+      if (!raw) return alert('URLを入力してください');
 
-      if (!raw) {
-        alert('URLを入力してください');
-        return;
-      }
-
-      // 自動補 https://
       let url = raw.startsWith('http') ? raw : 'https://' + raw;
 
-      // 關鍵：新分頁開啟代理內容
-      window.open('https://ituyama-proxy.onrender.com/' + url, '_blank');
+      // 開真正的 about:blank 分頁
+      const newTab = window.open('about:blank', '_blank');
+
+      if (newTab) {
+        // 顯示載入提示（可選）
+        document.getElementById('loading').style.display = 'block';
+
+        // 延遲 1 秒，讓 about:blank 先出現（可調大）
+        setTimeout(() => {
+          // 在空白分頁裡寫入全屏 iframe（網址列保持 about:blank）
+          newTab.document.open();
+          newTab.document.write(`
+            <!DOCTYPE html>
+            <html lang="ja">
+            <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Loading...</title>
+              <style>body{margin:0;padding:0;background:#000;}</style>
+            </head>
+            <body>
+              <iframe src="https://ituyama-proxy.onrender.com/${url}" 
+                      style="width:100vw;height:100vh;border:none;" 
+                      allowfullscreen></iframe>
+            </body>
+            </html>
+          `);
+          newTab.document.close();
+
+          // 隱藏載入提示
+          document.getElementById('loading').style.display = 'none';
+        }, 1000);  // ← 這裡延遲 1 秒，可改成 3000（3秒）或更大
+      } else {
+        alert('無法開新分頁，請檢查瀏覽器是否阻擋彈出視窗');
+      }
     }
 
-    // Enter 鍵也觸發
+    // Enter 鍵觸發
     document.querySelector('input').addEventListener('keydown', e => {
       if (e.key === 'Enter') {
         e.preventDefault();
