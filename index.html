@@ -20,45 +20,76 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      position: relative;
+    }
+
+    /* 背景星星粒子：從下往上飄動 */
+    .stars {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 12px white;
+      opacity: 0.6;
+      animation: rise 12s linear infinite, twinkle 4s infinite alternate;
+    }
+    @keyframes rise {
+      0% {
+        transform: translateY(120vh) scale(0.8);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.8;
+      }
+      90% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(-30vh) scale(1.2);
+        opacity: 0;
+      }
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.4; }
+      50%      { opacity: 1; }
     }
 
     .container {
       text-align: center;
-      position: relative;
       z-index: 2;
       width: 90%;
-      max-width: 700px;
+      max-width: 720px;
     }
 
     h1 {
-      font-size: 5rem;
-      letter-spacing: 10px;
-      margin-bottom: 4rem;
-      background: linear-gradient(90deg, #00d4ff, #ff00aa, #7c00ff, #00d4ff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      background-size: 300% 300%;
-      animation: gradient 10s ease infinite;
+      font-size: 5.2rem;
+      letter-spacing: 12px;
+      margin-bottom: 5rem;
       text-shadow: 
-        0 0 30px rgba(0,212,255,0.6),
-        0 0 60px rgba(255,0,170,0.4),
-        0 0 100px rgba(124,0,255,0.3);
+        0 0 20px #00c4ff,
+        0 0 40px #00c4ff,
+        0 0 80px #00c4ff;
+      animation: glow 4s infinite alternate;
     }
 
     .input-box,
     .btn-box {
       width: 100%;
-      padding: 1.6rem 2.5rem;
-      margin: 1.5rem 0;
-      font-size: 1.8rem;
-      border: none;
+      padding: 1.8rem 2.5rem;
+      margin: 1.8rem 0;
+      font-size: 1.9rem;
       border-radius: 16px;
-      background: rgba(20,20,50,0.6);
-      backdrop-filter: blur(12px);
+      border: 2px solid #00c4ff;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
       transition: all 0.4s ease;
-      position: relative;
-      overflow: hidden;
+      box-shadow: 
+        0 0 30px rgba(0,196,255,0.5),
+        inset 0 0 25px rgba(0,196,255,0.3);
     }
 
     .input-box {
@@ -67,7 +98,14 @@
     }
 
     .input-box::placeholder {
-      color: rgba(255,255,255,0.45);
+      color: rgba(255,255,255,0.5);
+    }
+
+    .input-box:focus {
+      outline: none;
+      box-shadow: 
+        0 0 50px rgba(0,196,255,0.8),
+        inset 0 0 35px rgba(0,196,255,0.45);
     }
 
     .btn-box {
@@ -76,43 +114,22 @@
       color: white;
     }
 
-    /* 輸入框藍色光暈（柔和） */
-    .input-box {
-      box-shadow: 
-        0 0 30px rgba(0,212,255,0.35),
-        inset 0 0 25px rgba(0,212,255,0.2);
-    }
-
-    .input-box:focus {
-      outline: none;
-      box-shadow: 
-        0 0 50px rgba(0,212,255,0.55),
-        inset 0 0 35px rgba(0,212,255,0.3);
-    }
-
-    /* 按鈕光暈（稍強一點） */
-    .btn-box {
-      box-shadow: 
-        0 0 35px rgba(124,0,255,0.45),
-        inset 0 0 30px rgba(255,0,170,0.25);
-    }
-
     .btn-box:hover {
-      transform: translateY(-5px);
+      transform: translateY(-6px);
       box-shadow: 
-        0 0 60px rgba(124,0,255,0.65),
-        inset 0 0 40px rgba(255,0,170,0.4);
+        0 0 60px rgba(0,196,255,0.9),
+        inset 0 0 40px rgba(0,196,255,0.55);
     }
 
-    /* 標題彩色漸變 */
-    @keyframes gradient {
-      0%   { background-position: 0% 50%; }
-      50%  { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    @keyframes glow {
+      from { text-shadow: 0 0 20px #00c4ff; }
+      to   { text-shadow: 0 0 80px #00c4ff; }
     }
   </style>
 </head>
 <body>
+
+  <div class="stars" id="stars"></div>
 
   <div class="container">
     <h1>ITUYUYAMAMA-PROXY</h1>
@@ -128,6 +145,20 @@
   </div>
 
   <script>
+    // 產生從下往上的大顆星星（約 60 顆，稀疏）
+    const starsContainer = document.getElementById('stars');
+    for (let i = 0; i < 60; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      const size = 4 + Math.random() * 5; // 4~9px，大一點
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      star.style.left = Math.random() * 100 + 'vw';
+      star.style.top = (Math.random() * 50 + 50) + 'vh'; // 從中下部開始
+      star.style.animationDelay = Math.random() * 12 + 's';
+      starsContainer.appendChild(star);
+    }
+
     function go() {
       const input = document.querySelector('input');
       let raw = input.value.trim();
@@ -135,7 +166,7 @@
 
       let url = raw.startsWith('http') ? raw : 'https://' + raw;
 
-      // 最安全的隱藏歷史記錄方式
+      // 隱藏歷史記錄
       window.location.replace('https://ituyama-proxy.onrender.com/' + url);
     }
 
