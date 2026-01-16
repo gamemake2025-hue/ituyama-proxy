@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Google</title> <!-- 永遠預設為 Google -->
+  <title>Google</title> <!-- 永遠顯示 Google -->
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
     body {
@@ -13,9 +13,6 @@
       color: #ffffff;
       font-family: 'Noto Sans JP', sans-serif;
       height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       overflow: hidden;
       transition: all 0.5s;
     }
@@ -66,15 +63,15 @@
       background: #222222;
       box-shadow: 0 0 30px rgba(255,255,255,0.4);
     }
-    /* Google 模式 */
+    /* Google 模式 - 完全複製 Google 首頁樣式 */
     .google-mode {
       background: #fff !important;
-      color: #000 !important;
-      font-family: Arial, sans-serif !important;
+      font-family: Arial, Helvetica, sans-serif !important;
     }
     .google-mode .container {
       justify-content: flex-start;
-      padding-top: 15vh;
+      padding-top: 10vh;
+      max-width: none;
     }
     .google-mode h1, .google-mode input, .google-mode button {
       display: none;
@@ -82,7 +79,7 @@
     .google-mode .logo {
       font-size: 7rem;
       font-weight: bold;
-      margin-bottom: 4rem;
+      margin-bottom: 3rem;
       letter-spacing: -10px;
     }
     .google-mode .logo span:nth-child(1) { color: #4285f4; }
@@ -101,6 +98,44 @@
       box-shadow: none;
       background: #fff;
       color: #000;
+      margin-bottom: 2rem;
+    }
+    .google-mode .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+    .google-mode .btn {
+      padding: 0.8rem 1.5rem;
+      background: #f8f9fa;
+      border: 1px solid #f8f9fa;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1.4rem;
+      color: #3c4043;
+    }
+    .google-mode .btn:hover {
+      border-color: #dadce0;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    }
+    .google-mode .footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background: #f2f2f2;
+      color: #70757a;
+      font-size: 0.9rem;
+      padding: 1rem 0;
+      text-align: center;
+    }
+    .google-mode .footer a {
+      color: #70757a;
+      margin: 0 1rem;
+      text-decoration: none;
+    }
+    .google-mode .footer a:hover {
+      text-decoration: underline;
     }
     /* 模式切換小按鈕 */
     .toggle-btn {
@@ -137,11 +172,11 @@
     <button onclick="goToSite()">サイトに行く</button>
   </div>
 
-  <!-- 模式切換小按鈕（右下角） -->
+  <!-- 模式切換小按鈕 -->
   <div class="toggle-btn" onclick="toggleMode()">🔄</div>
 
   <script>
-    let isGoogleMode = false; // 預設 ITYAMA 模式
+    let isGoogleMode = true; // 預設 Google 模式
 
     function toggleMode() {
       isGoogleMode = !isGoogleMode;
@@ -150,15 +185,28 @@
       if (isGoogleMode) {
         document.title = 'Google';
         document.body.innerHTML = `
-          <div style="text-align:center; margin-top:15vh;">
+          <div style="text-align:center; margin-top:10vh;">
             <div class="logo">
               <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
             </div>
             <input type="text" class="search-box" placeholder="Google で検索または URL を入力">
+            <div class="buttons">
+              <div class="btn">Google Search</div>
+              <div class="btn">I'm Feeling Lucky</div>
+            </div>
+          </div>
+          <div class="footer">
+            <a href="#">Advertising</a>
+            <a href="#">Business</a>
+            <a href="#">How Search works</a>
+            <br>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Settings</a>
           </div>
           <div class="toggle-btn" onclick="toggleMode()">🔄</div>
         `;
-        // 讓搜尋框能真的搜 Google
+        // 讓搜尋框正常工作
         document.querySelector('.search-box').addEventListener('keydown', e => {
           if (e.key === 'Enter') {
             const query = e.target.value.trim();
@@ -167,11 +215,22 @@
             }
           }
         });
+        // 按 Google Search 按鈕也搜尋
+        document.querySelectorAll('.btn')[0].addEventListener('click', () => {
+          const query = document.querySelector('.search-box').value.trim();
+          if (query) {
+            window.location.href = 'https://www.google.com/search?q=' + encodeURIComponent(query);
+          }
+        });
       } else {
         location.reload(); // 恢復 ITYAMA 模式
       }
     }
 
+    // 預設載入 Google 模式
+    toggleMode();
+
+    // ITYAMA 模式功能（隱藏在 Google 模式下）
     function goToSite() {
       let raw = document.getElementById('urlInput')?.value?.trim();
       if (!raw) return alert('URLを入力してください');
@@ -183,13 +242,6 @@
 
       window.location.href = 'https://ituyama-proxy.onrender.com/' + url;
     }
-
-    document.getElementById('urlInput')?.addEventListener('keydown', e => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        goToSite();
-      }
-    });
   </script>
 </body>
 </html>
