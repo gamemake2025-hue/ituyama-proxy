@@ -1,67 +1,117 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Google</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&display=swap" rel="stylesheet"/>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&display=swap');
-    body {
+    * {
       margin: 0;
       padding: 0;
-      background: #000000;
-      overflow: hidden;
-      height: 100vh;
-      font-family: 'Noto Sans JP', sans-serif;
-      color: #ffffff;
+      box-sizing: border-box;
     }
-    .container {
-      position: relative;
-      height: 100%;
+    body {
+      height: 100vh;
+      background: #000;
+      font-family: 'Noto Sans JP', sans-serif;
+      color: #fff;
+      overflow: hidden;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
+    }
+
+    .container {
       text-align: center;
+      position: relative;
       z-index: 2;
+      width: 90%;
+      max-width: 720px;
     }
+
     h1 {
-      font-size: 5.5rem;
+      font-size: 4.8rem;
+      letter-spacing: 8px;
       margin-bottom: 3.5rem;
-      text-shadow: 0 0 30px #00aaff, 0 0 60px #00aaff, 0 0 100px #00aaff;
-      letter-spacing: 12px;
-      animation: glow 4s infinite alternate;
+      background: linear-gradient(90deg, #00d4ff, #ff00aa, #7c00ff, #00d4ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      background-size: 300% 300%;
+      animation: titleGradient 8s ease infinite;
+      text-shadow: 
+        0 0 20px rgba(0,212,255,0.7),
+        0 0 40px rgba(255,0,170,0.5),
+        0 0 80px rgba(124,0,255,0.4);
     }
-    .input-box, .btn-box {
-      width: 80%;
-      max-width: 800px;
-      padding: 1.8rem;
-      font-size: 2.4rem;
-      background: rgba(0,0,0,0.7);
-      border: 2px solid #00aaff;
-      border-radius: 12px;
-      margin: 1.8rem 0;
-      box-shadow: 0 0 40px #00aaff;
-      transition: all 0.4s;
-    }
-    .input-box:hover, .btn-box:hover {
-      box-shadow: 0 0 70px #00aaff;
-      transform: translateY(-6px);
-    }
-    input {
+
+    .input-box,
+    .btn-box {
       width: 100%;
-      background: transparent;
+      padding: 1.4rem 2rem;
+      margin: 1.2rem 0;
+      font-size: 1.6rem;
       border: none;
-      color: #ffffff;
-      font-size: 2.4rem;
-      outline: none;
+      border-radius: 12px;
+      background: rgba(10,10,30,0.65);
+      backdrop-filter: blur(8px);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .input-box {
+      color: white;
       text-align: center;
     }
+
+    .input-box::placeholder {
+      color: rgba(255,255,255,0.5);
+    }
+
     .btn-box {
       cursor: pointer;
       font-weight: bold;
+      color: white;
     }
-    /* 藍色粒子效果（60顆，進頁面立即動） */
+
+    /* 彩色光暈 - 輸入框（較淡） */
+    .input-box {
+      box-shadow: 
+        0 0 25px rgba(0,212,255,0.4),
+        inset 0 0 20px rgba(0,212,255,0.25);
+    }
+
+    .input-box:focus {
+      outline: none;
+      box-shadow: 
+        0 0 40px rgba(0,212,255,0.6),
+        inset 0 0 30px rgba(0,212,255,0.35);
+    }
+
+    /* 按鈕光暈 */
+    .btn-box {
+      box-shadow: 
+        0 0 30px rgba(124,0,255,0.5),
+        inset 0 0 25px rgba(255,0,170,0.3);
+    }
+
+    .btn-box:hover {
+      transform: translateY(-4px);
+      box-shadow: 
+        0 0 50px rgba(124,0,255,0.7),
+        inset 0 0 35px rgba(255,0,170,0.45);
+    }
+
+    /* 標題彩色漸變動畫 */
+    @keyframes titleGradient {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* 背景微光粒子（可選，數量已大幅減少） */
     .particles {
       position: absolute;
       inset: 0;
@@ -72,84 +122,58 @@
       position: absolute;
       width: 3px;
       height: 3px;
-      background: #00aaff;
+      background: #00d4ff;
       border-radius: 50%;
-      box-shadow: 0 0 12px #00aaff, 0 0 25px #00aaff;
-      animation: move 12s linear infinite, twinkle 3s ease-in-out infinite;
-      opacity: 0.7;
-      animation-delay: calc(var(--i) * -0.2s); /* 負延遲，讓進頁面立即開始動 */
+      box-shadow: 0 0 12px #00d4ff;
+      opacity: 0.5;
+      animation: float 15s linear infinite;
     }
-    @keyframes move {
-      0%   { transform: translate(0, 0); }
-      25%  { transform: translate(calc(150vw * var(--dx)), calc(150vh * var(--dy))); }
-      50%  { transform: translate(calc(150vw * var(--dx) * -1), calc(150vh * var(--dy) * -1)); }
-      75%  { transform: translate(calc(150vw * var(--dx)), calc(150vh * var(--dy))); }
-      100% { transform: translate(0, 0); }
-    }
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.4; }
-      50%      { opacity: 1; }
-    }
-    @keyframes glow {
-      from { text-shadow: 0 0 30px #00aaff; }
-      to   { text-shadow: 0 0 100px #00aaff; }
+    @keyframes float {
+      0%   { transform: translateY(100vh) translateX(0); opacity: 0.2; }
+      100% { transform: translateY(-100vh) translateX(var(--drift)); opacity: 0.8; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>ITUYAMA-PROXY</h1>
-
-    <div class="input-box">
-      <input type="text" placeholder="URLを入力してください" autofocus>
-    </div>
-
-    <div class="btn-box" onclick="goToSite()">サイトに行く</div>
-  </div>
 
   <div class="particles" id="particles"></div>
 
-  <script>
-    const particlesContainer = document.getElementById('particles');
+  <div class="container">
+    <h1>ITUYUYAMAMA-PROXY</h1>
 
-    // 產生 60 顆純藍色小粒子，全部立即動
-    for (let i = 0; i < 60; i++) {
+    <input 
+      type="text" 
+      class="input-box" 
+      placeholder="URLを入力してください" 
+      autofocus
+    />
+
+    <div class="btn-box" onclick="go()">サイトトに行く</div>
+  </div>
+
+  <script>
+    // 產生少量背景粒子
+    const particles = document.getElementById('particles');
+    for(let i = 0; i < 30; i++){
       const p = document.createElement('div');
       p.className = 'particle';
-      p.style.setProperty('--i', i); // 用於負延遲
-
-      // 隨機位置
-      p.style.left = Math.random() * 100 + 'vw';
-      p.style.top = Math.random() * 100 + 'vh';
-
-      // 隨機移動方向
-      const dx = Math.random() > 0.5 ? 1 : -1;
-      const dy = Math.random() > 0.5 ? 1 : -1;
-      p.style.setProperty('--dx', dx);
-      p.style.setProperty('--dy', dy);
-
-      // 隨機動畫時長（確保流暢）
-      const duration = 10 + Math.random() * 8;
-      p.style.animationDuration = duration + 's, 3s';
-
-      particlesContainer.appendChild(p);
+      p.style.left = Math.random()*100 + 'vw';
+      p.style.animationDelay = Math.random()*15 + 's';
+      p.style.setProperty('--drift', (Math.random()*200 - 100)+'vw');
+      particles.appendChild(p);
     }
 
-    function goToSite() {
-      const input = document.querySelector('input');
-      let raw = input.value.trim();
-      if (!raw) return alert('URLを入力してください');
-
-      let url = raw.startsWith('http') ? raw : 'https://' + raw;
-
-      // 使用 replace 確保不留任何中間歷史記錄
-      window.location.replace('https://ituyama-proxy.onrender.com/' + url);
+    function go(){
+      const url = document.querySelector('input').value.trim();
+      if(!url) return alert('URLを入力してください');
+      let target = url.startsWith('http') ? url : 'https://' + url;
+      window.location.replace('https://ituyama-proxy.onrender.com/' + target);
     }
 
     document.querySelector('input').addEventListener('keydown', e => {
-      if (e.key === 'Enter') {
+      if(e.key === 'Enter') {
         e.preventDefault();
-        goToSite();
+        go();
       }
     });
   </script>
