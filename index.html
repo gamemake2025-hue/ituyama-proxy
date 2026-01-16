@@ -3,245 +3,164 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Google</title> <!-- 永遠顯示 Google -->
+  <title>Google</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&display=swap');
     body {
       margin: 0;
       padding: 0;
       background: #000000;
-      color: #ffffff;
-      font-family: 'Noto Sans JP', sans-serif;
-      height: 100vh;
       overflow: hidden;
-      transition: all 0.5s;
+      height: 100vh;
+      font-family: 'Noto Sans JP', sans-serif;
+      color: #ffffff;
     }
     .container {
+      position: relative;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       text-align: center;
-      max-width: 900px;
-      padding: 3rem;
     }
     h1 {
-      font-size: 5rem;
-      margin-bottom: 2.5rem;
+      font-size: 5.2rem;
+      margin-bottom: 3rem;
       text-shadow: 0 0 40px #00aaff, 0 0 80px #00aaff;
-      letter-spacing: 8px;
-      color: #ffffff;
+      letter-spacing: 10px;
+      animation: glow 3s infinite alternate;
+    }
+    .input-box, .btn-box {
+      width: 80%;
+      max-width: 700px;
+      padding: 1.6rem;
+      font-size: 2.2rem;
+      background: rgba(0,0,0,0.6);
+      border: 2px solid transparent;
+      border-radius: 12px;
+      margin: 1.5rem 0;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(0,170,255,0.5);
+      transition: all 0.4s;
+    }
+    .input-box:hover, .btn-box:hover {
+      box-shadow: 0 0 60px rgba(0,170,255,0.8);
+      transform: translateY(-5px);
     }
     input {
-      width: 90%;
-      max-width: 800px;
-      padding: 1.5rem;
-      font-size: 2rem;
-      background: #111111;
-      color: #ffffff;
-      border: 2px solid #333333;
-      border-radius: 8px;
-      outline: none;
-      margin: 1.5rem 0;
-      text-shadow: 0 0 10px rgba(255,255,255,0.6);
-    }
-    input:focus {
-      border-color: #00aaff;
-      box-shadow: 0 0 30px rgba(0, 170, 255, 0.7);
-    }
-    button {
-      width: 90%;
-      max-width: 800px;
-      padding: 1.5rem;
-      font-size: 2.5rem;
-      background: #000000;
-      color: #ffffff;
-      border: 2px solid #ffffff;
-      border-radius: 8px;
-      cursor: pointer;
-      margin: 1.5rem 0;
-      transition: all 0.3s;
-      text-shadow: 0 0 10px rgba(255,255,255,0.6);
-    }
-    button:hover {
-      background: #222222;
-      box-shadow: 0 0 30px rgba(255,255,255,0.4);
-    }
-    /* Google 模式 - 完全複製 Google 首頁樣式 */
-    .google-mode {
-      background: #fff !important;
-      font-family: Arial, Helvetica, sans-serif !important;
-    }
-    .google-mode .container {
-      justify-content: flex-start;
-      padding-top: 10vh;
-      max-width: none;
-    }
-    .google-mode h1, .google-mode input, .google-mode button {
-      display: none;
-    }
-    .google-mode .logo {
-      font-size: 7rem;
-      font-weight: bold;
-      margin-bottom: 3rem;
-      letter-spacing: -10px;
-    }
-    .google-mode .logo span:nth-child(1) { color: #4285f4; }
-    .google-mode .logo span:nth-child(2) { color: #34a853; }
-    .google-mode .logo span:nth-child(3) { color: #fbbc05; }
-    .google-mode .logo span:nth-child(4) { color: #ea4335; }
-    .google-mode .logo span:nth-child(5) { color: #4285f4; }
-    .google-mode .logo span:nth-child(6) { color: #34a853; }
-    .google-mode .search-box {
-      width: 50%;
-      max-width: 600px;
-      padding: 1.5rem;
-      font-size: 1.8rem;
-      border: 1px solid #dfe1e5;
-      border-radius: 24px;
-      box-shadow: none;
-      background: #fff;
-      color: #000;
-      margin-bottom: 2rem;
-    }
-    .google-mode .buttons {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-bottom: 3rem;
-    }
-    .google-mode .btn {
-      padding: 0.8rem 1.5rem;
-      background: #f8f9fa;
-      border: 1px solid #f8f9fa;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 1.4rem;
-      color: #3c4043;
-    }
-    .google-mode .btn:hover {
-      border-color: #dadce0;
-      box-shadow: 0 1px 1px rgba(0,0,0,0.1);
-    }
-    .google-mode .footer {
-      position: absolute;
-      bottom: 0;
       width: 100%;
-      background: #f2f2f2;
-      color: #70757a;
-      font-size: 0.9rem;
-      padding: 1rem 0;
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      font-size: 2.2rem;
+      outline: none;
       text-align: center;
     }
-    .google-mode .footer a {
-      color: #70757a;
-      margin: 0 1rem;
-      text-decoration: none;
+    .btn-box {
+      cursor: pointer;
+      font-weight: bold;
     }
-    .google-mode .footer a:hover {
-      text-decoration: underline;
+    /* 藍色粒子效果 */
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
     }
-    /* 模式切換小按鈕 */
-    .toggle-btn {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #00aaff;
+      border-radius: 50%;
+      box-shadow: 0 0 12px #00aaff;
+      animation: float 8s infinite linear, fade 8s infinite;
+      opacity: 0.6;
+    }
+    @keyframes float {
+      0% { transform: translateY(100vh) scale(0.5); }
+      100% { transform: translateY(-100vh) scale(1); }
+    }
+    @keyframes fade {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.8; }
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 20px #00aaff; }
+      to { text-shadow: 0 0 60px #00aaff; }
+    }
+    /* Google 小按鈕（右上角） */
+    .google-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
       width: 60px;
       height: 60px;
-      background: rgba(0,0,0,0.6);
-      color: #fff;
-      border: 2px solid #fff;
+      background: radial-gradient(circle, #4285f4 0%, #3367d6 100%);
       border-radius: 50%;
-      font-size: 1.8rem;
-      cursor: pointer;
+      box-shadow: 0 0 40px #4285f4;
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 9999;
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
       transition: all 0.3s;
+      z-index: 999;
     }
-    .toggle-btn:hover {
-      background: #fff;
-      color: #000;
-      box-shadow: 0 0 20px rgba(255,255,255,0.5);
+    .google-btn:hover {
+      transform: scale(1.15);
+      box-shadow: 0 0 80px #4285f4;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>ITUYAMA-PROXY</h1>
-    
-    <input id="urlInput" type="text" placeholder="URLを入力してください" autofocus>
-    
-    <button onclick="goToSite()">サイトに行く</button>
+
+    <div class="input-box">
+      <input type="text" placeholder="URLを入力してください" autofocus>
+    </div>
+
+    <div class="btn-box" onclick="goToSite()">サイトに行く</div>
+
+    <!-- 粒子效果容器 -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Google 小按鈕（右上角） -->
+    <div class="google-btn" onclick="window.location.href='https://www.google.com'">G</div>
   </div>
 
-  <!-- 模式切換小按鈕 -->
-  <div class="toggle-btn" onclick="toggleMode()">🔄</div>
-
   <script>
-    let isGoogleMode = true; // 預設 Google 模式
-
-    function toggleMode() {
-      isGoogleMode = !isGoogleMode;
-      document.body.classList.toggle('google-mode', isGoogleMode);
-
-      if (isGoogleMode) {
-        document.title = 'Google';
-        document.body.innerHTML = `
-          <div style="text-align:center; margin-top:10vh;">
-            <div class="logo">
-              <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
-            </div>
-            <input type="text" class="search-box" placeholder="Google で検索または URL を入力">
-            <div class="buttons">
-              <div class="btn">Google Search</div>
-              <div class="btn">I'm Feeling Lucky</div>
-            </div>
-          </div>
-          <div class="footer">
-            <a href="#">Advertising</a>
-            <a href="#">Business</a>
-            <a href="#">How Search works</a>
-            <br>
-            <a href="#">Privacy</a>
-            <a href="#">Terms</a>
-            <a href="#">Settings</a>
-          </div>
-          <div class="toggle-btn" onclick="toggleMode()">🔄</div>
-        `;
-        // 讓搜尋框正常工作
-        document.querySelector('.search-box').addEventListener('keydown', e => {
-          if (e.key === 'Enter') {
-            const query = e.target.value.trim();
-            if (query) {
-              window.location.href = 'https://www.google.com/search?q=' + encodeURIComponent(query);
-            }
-          }
-        });
-        // 按 Google Search 按鈕也搜尋
-        document.querySelectorAll('.btn')[0].addEventListener('click', () => {
-          const query = document.querySelector('.search-box').value.trim();
-          if (query) {
-            window.location.href = 'https://www.google.com/search?q=' + encodeURIComponent(query);
-          }
-        });
-      } else {
-        location.reload(); // 恢復 ITYAMA 模式
-      }
+    // 產生少量閃爍粒子
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 30; i++) { // 少一點粒子
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.animationDelay = Math.random() * 8 + 's';
+      p.style.animationDuration = (6 + Math.random() * 6) + 's';
+      particlesContainer.appendChild(p);
     }
 
-    // 預設載入 Google 模式
-    toggleMode();
-
-    // ITYAMA 模式功能（隱藏在 Google 模式下）
     function goToSite() {
-      let raw = document.getElementById('urlInput')?.value?.trim();
+      const input = document.querySelector('input');
+      let raw = input.value.trim();
       if (!raw) return alert('URLを入力してください');
 
-      let url = raw;
-      if (!url.startsWith('http://') && !url.startsWith('https://')) {
-        url = 'https://' + raw;
-      }
-
+      let url = raw.startsWith('http') ? raw : 'https://' + raw;
       window.location.href = 'https://ituyama-proxy.onrender.com/' + url;
     }
+
+    document.querySelector('input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') goToSite();
+    });
   </script>
 </body>
 </html>
