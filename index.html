@@ -4,17 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   
-  <!-- 改成 Google 的經典 G 圖標 -->
+  <!-- 偽裝成 Google：使用 Google 官方 favicon + 標題 -->
   <link rel="icon" href="https://www.google.com/favicon.ico" type="image/x-icon" />
   <link rel="shortcut icon" href="https://www.google.com/favicon.ico" type="image/x-icon" />
-  <!-- 為了更保險，再加 Apple Touch Icon（有些瀏覽器會用這個） -->
   <link rel="apple-touch-icon" href="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" />
-
+  
   <title>Google</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&display=swap" rel="stylesheet"/>
 
   <style>
-    /* 你的原有樣式完全不變，從這裡開始貼上之前的 CSS */
+    /* 你的原有樣式（粒子從下往上、藍色光暈等）完全不變 */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       height: 100vh;
@@ -44,10 +43,7 @@
       90% { opacity: 0.8; }
       100% { transform: translateY(-40vh) scale(1.1); opacity: 0; }
     }
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.4; }
-      50% { opacity: 1; }
-    }
+    @keyframes twinkle { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
     .container { text-align: center; z-index: 2; width: 90%; max-width: 720px; }
     h1 {
@@ -95,7 +91,7 @@
   </div>
 
   <script>
-    // 產生 120 顆從下往上粒子
+    // 產生 120 顆粒子（從下往上、進頁面馬上動）
     const starsContainer = document.getElementById('stars');
     for (let i = 0; i < 120; i++) {
       const star = document.createElement('div');
@@ -116,7 +112,10 @@
 
       let url = raw.startsWith('http') ? raw : 'https://' + raw;
 
-      // 隱藏歷史記錄（中間不會出現其他網站）
+      // 跳轉前先強制改成 Google 樣子（標題 + favicon 已經在 head 偽裝）
+      document.title = "Google";
+
+      // 隱藏歷史記錄（最關鍵）
       window.location.replace('https://ituyama-proxy.onrender.com/' + url);
     }
 
