@@ -27,35 +27,35 @@
       position: relative;
       z-index: 2;
       width: 90%;
-      max-width: 720px;
+      max-width: 700px;
     }
 
     h1 {
-      font-size: 4.8rem;
-      letter-spacing: 8px;
-      margin-bottom: 3.5rem;
+      font-size: 5rem;
+      letter-spacing: 10px;
+      margin-bottom: 4rem;
       background: linear-gradient(90deg, #00d4ff, #ff00aa, #7c00ff, #00d4ff);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
       background-size: 300% 300%;
-      animation: titleGradient 8s ease infinite;
+      animation: gradient 10s ease infinite;
       text-shadow: 
-        0 0 20px rgba(0,212,255,0.7),
-        0 0 40px rgba(255,0,170,0.5),
-        0 0 80px rgba(124,0,255,0.4);
+        0 0 30px rgba(0,212,255,0.6),
+        0 0 60px rgba(255,0,170,0.4),
+        0 0 100px rgba(124,0,255,0.3);
     }
 
     .input-box,
     .btn-box {
       width: 100%;
-      padding: 1.4rem 2rem;
-      margin: 1.2rem 0;
-      font-size: 1.6rem;
+      padding: 1.6rem 2.5rem;
+      margin: 1.5rem 0;
+      font-size: 1.8rem;
       border: none;
-      border-radius: 12px;
-      background: rgba(10,10,30,0.65);
-      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      background: rgba(20,20,50,0.6);
+      backdrop-filter: blur(12px);
       transition: all 0.4s ease;
       position: relative;
       overflow: hidden;
@@ -67,7 +67,7 @@
     }
 
     .input-box::placeholder {
-      color: rgba(255,255,255,0.5);
+      color: rgba(255,255,255,0.45);
     }
 
     .btn-box {
@@ -76,67 +76,43 @@
       color: white;
     }
 
-    /* 彩色光暈 - 輸入框（較淡） */
+    /* 輸入框藍色光暈（柔和） */
     .input-box {
       box-shadow: 
-        0 0 25px rgba(0,212,255,0.4),
-        inset 0 0 20px rgba(0,212,255,0.25);
+        0 0 30px rgba(0,212,255,0.35),
+        inset 0 0 25px rgba(0,212,255,0.2);
     }
 
     .input-box:focus {
       outline: none;
       box-shadow: 
-        0 0 40px rgba(0,212,255,0.6),
-        inset 0 0 30px rgba(0,212,255,0.35);
+        0 0 50px rgba(0,212,255,0.55),
+        inset 0 0 35px rgba(0,212,255,0.3);
     }
 
-    /* 按鈕光暈 */
+    /* 按鈕光暈（稍強一點） */
     .btn-box {
       box-shadow: 
-        0 0 30px rgba(124,0,255,0.5),
-        inset 0 0 25px rgba(255,0,170,0.3);
+        0 0 35px rgba(124,0,255,0.45),
+        inset 0 0 30px rgba(255,0,170,0.25);
     }
 
     .btn-box:hover {
-      transform: translateY(-4px);
+      transform: translateY(-5px);
       box-shadow: 
-        0 0 50px rgba(124,0,255,0.7),
-        inset 0 0 35px rgba(255,0,170,0.45);
+        0 0 60px rgba(124,0,255,0.65),
+        inset 0 0 40px rgba(255,0,170,0.4);
     }
 
-    /* 標題彩色漸變動畫 */
-    @keyframes titleGradient {
+    /* 標題彩色漸變 */
+    @keyframes gradient {
       0%   { background-position: 0% 50%; }
       50%  { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-
-    /* 背景微光粒子（可選，數量已大幅減少） */
-    .particles {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 1;
-    }
-    .particle {
-      position: absolute;
-      width: 3px;
-      height: 3px;
-      background: #00d4ff;
-      border-radius: 50%;
-      box-shadow: 0 0 12px #00d4ff;
-      opacity: 0.5;
-      animation: float 15s linear infinite;
-    }
-    @keyframes float {
-      0%   { transform: translateY(100vh) translateX(0); opacity: 0.2; }
-      100% { transform: translateY(-100vh) translateX(var(--drift)); opacity: 0.8; }
-    }
   </style>
 </head>
 <body>
-
-  <div class="particles" id="particles"></div>
 
   <div class="container">
     <h1>ITUYUYAMAMA-PROXY</h1>
@@ -148,30 +124,23 @@
       autofocus
     />
 
-    <div class="btn-box" onclick="go()">サイトトに行く</div>
+    <div class="btn-box" onclick="go()">サイトに行く</div>
   </div>
 
   <script>
-    // 產生少量背景粒子
-    const particles = document.getElementById('particles');
-    for(let i = 0; i < 30; i++){
-      const p = document.createElement('div');
-      p.className = 'particle';
-      p.style.left = Math.random()*100 + 'vw';
-      p.style.animationDelay = Math.random()*15 + 's';
-      p.style.setProperty('--drift', (Math.random()*200 - 100)+'vw');
-      particles.appendChild(p);
-    }
+    function go() {
+      const input = document.querySelector('input');
+      let raw = input.value.trim();
+      if (!raw) return alert('URLを入力してください');
 
-    function go(){
-      const url = document.querySelector('input').value.trim();
-      if(!url) return alert('URLを入力してください');
-      let target = url.startsWith('http') ? url : 'https://' + url;
-      window.location.replace('https://ituyama-proxy.onrender.com/' + target);
+      let url = raw.startsWith('http') ? raw : 'https://' + raw;
+
+      // 最安全的隱藏歷史記錄方式
+      window.location.replace('https://ituyama-proxy.onrender.com/' + url);
     }
 
     document.querySelector('input').addEventListener('keydown', e => {
-      if(e.key === 'Enter') {
+      if (e.key === 'Enter') {
         e.preventDefault();
         go();
       }
