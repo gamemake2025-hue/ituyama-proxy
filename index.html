@@ -68,9 +68,6 @@
     .btn-box { cursor: pointer; font-weight: bold; color: white; }
     .btn-box:hover { transform: translateY(-6px); box-shadow: 0 0 60px rgba(0,196,255,0.9), inset 0 0 40px rgba(0,196,255,0.55); }
     @keyframes glow { from { text-shadow: 0 0 20px #00c4ff; } to { text-shadow: 0 0 80px #00c4ff; } }
-
-    /* 載入提示（可選） */
-    .loading { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #00c4ff; font-size: 2rem; z-index: 10000; display: none; }
   </style>
 </head>
 <body>
@@ -90,12 +87,9 @@
     <div class="btn-box" onclick="go()">サイトに行く</div>
 
     <p style="margin-top: 2rem; font-size: 1.2rem; color: #aaa;">
-      跳轉會在新分頁開啟，先顯示 about:blank，然後載入內容（網址列會盡量保持空白）
+      新分頁會顯示 about:blank，內容透過 iframe 載入（網址列盡量保持空白）
     </p>
   </div>
-
-  <!-- 載入提示（可選） -->
-  <div class="loading" id="loading">載入中... 請稍候</div>
 
   <script>
     // 產生粒子
@@ -112,7 +106,6 @@
       starsContainer.appendChild(star);
     }
 
-    // 核心：開新分頁 + 先顯示 about:blank + 用 iframe 載入（網址列盡量保持）
     function go() {
       const input = document.querySelector('input');
       let raw = input.value.trim();
@@ -120,14 +113,11 @@
 
       let url = raw.startsWith('http') ? raw : 'https://' + raw;
 
-      // 開真正的 about:blank 分頁
+      // 開啟真正的 about:blank 分頁
       const newTab = window.open('about:blank', '_blank');
 
       if (newTab) {
-        // 顯示載入提示（可選）
-        document.getElementById('loading').style.display = 'block';
-
-        // 延遲 1 秒，讓 about:blank 先出現（可調大）
+        // 延遲一點，讓 about:blank 先出現明顯
         setTimeout(() => {
           // 在空白分頁裡寫入全屏 iframe（網址列保持 about:blank）
           newTab.document.open();
@@ -137,23 +127,22 @@
             <head>
               <meta charset="UTF-8">
               <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <title>Loading...</title>
-              <style>body{margin:0;padding:0;background:#000;}</style>
+              <title>Google</title>
+              <link rel="icon" href="https://www.google.com/favicon.ico">
+              <style>
+                body { margin:0; padding:0; background:#000; overflow:hidden; }
+                iframe { width:100vw; height:100vh; border:none; }
+              </style>
             </head>
             <body>
-              <iframe src="https://ituyama-proxy.onrender.com/${url}" 
-                      style="width:100vw;height:100vh;border:none;" 
-                      allowfullscreen></iframe>
+              <iframe src="https://ituyama-proxy.onrender.com/${url}" allowfullscreen></iframe>
             </body>
             </html>
           `);
           newTab.document.close();
-
-          // 隱藏載入提示
-          document.getElementById('loading').style.display = 'none';
-        }, 1000);  // ← 這裡延遲 1 秒，可改成 3000（3秒）或更大
+        }, 500);  // 0.5秒延遲，可調大到 2000~5000 讓空白更明顯
       } else {
-        alert('無法開新分頁，請檢查瀏覽器是否阻擋彈出視窗');
+        alert('無法開新分頁，請允許彈出視窗（點擊瀏覽器允許）');
       }
     }
 
