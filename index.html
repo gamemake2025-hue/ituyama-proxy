@@ -61,7 +61,7 @@
       cursor: pointer;
       font-weight: bold;
     }
-    /* 藍色粒子效果（50顆，全動，小點，無大小變化） */
+    /* 藍色粒子效果（60顆，進頁面立即動） */
     .particles {
       position: absolute;
       inset: 0;
@@ -77,6 +77,7 @@
       box-shadow: 0 0 12px #00aaff, 0 0 25px #00aaff;
       animation: move 12s linear infinite, twinkle 3s ease-in-out infinite;
       opacity: 0.7;
+      animation-delay: calc(var(--i) * -0.2s); /* 負延遲，讓進頁面立即開始動 */
     }
     @keyframes move {
       0%   { transform: translate(0, 0); }
@@ -111,29 +112,25 @@
   <script>
     const particlesContainer = document.getElementById('particles');
 
-    // 產生 60 顆純藍色小粒子，全動
+    // 產生 60 顆純藍色小粒子，全部立即動
     for (let i = 0; i < 60; i++) {
       const p = document.createElement('div');
       p.className = 'particle';
+      p.style.setProperty('--i', i); // 用於負延遲
 
-      // 固定小大小 3px
-      p.style.width = '3px';
-      p.style.height = '3px';
-
-      // 隨機初始位置
+      // 隨機位置
       p.style.left = Math.random() * 100 + 'vw';
       p.style.top = Math.random() * 100 + 'vh';
 
-      // 隨機移動方向（正負）
+      // 隨機移動方向
       const dx = Math.random() > 0.5 ? 1 : -1;
       const dy = Math.random() > 0.5 ? 1 : -1;
       p.style.setProperty('--dx', dx);
       p.style.setProperty('--dy', dy);
 
-      // 隨機動畫時長與延遲（確保流暢）
-      const duration = 10 + Math.random() * 8; // 10~18秒，緩慢漂移
-      p.style.animationDuration = duration + 's, ' + (2.8 + Math.random() * 1.2) + 's';
-      p.style.animationDelay = Math.random() * duration + 's, ' + Math.random() * 3 + 's';
+      // 隨機動畫時長（確保流暢）
+      const duration = 10 + Math.random() * 8;
+      p.style.animationDuration = duration + 's, 3s';
 
       particlesContainer.appendChild(p);
     }
@@ -145,7 +142,7 @@
 
       let url = raw.startsWith('http') ? raw : 'https://' + raw;
 
-      // 使用 replace 完全不留歷史記錄（不會出現 youtube、netflix 等）
+      // 使用 replace 確保不留任何中間歷史記錄
       window.location.replace('https://ituyama-proxy.onrender.com/' + url);
     }
 
