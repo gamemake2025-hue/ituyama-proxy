@@ -85,23 +85,22 @@
       border-radius: 50%;
       background: linear-gradient(45deg, #00aaff, #3399ff, #aa88ff, #cc99ff);
       box-shadow: 0 0 15px currentColor, 0 0 30px currentColor;
-      animation: float linear infinite, twinkle ease-in-out infinite;
+      animation: move 12s linear infinite, twinkle 3s ease-in-out infinite;
     }
-    @keyframes float {
-      from {
-        transform: translate(var(--start-x), var(--start-y));
-      }
-      to {
-        transform: translate(var(--end-x), var(--end-y));
-      }
+    @keyframes move {
+      0%   { transform: translate(0, 0); }
+      25%  { transform: translate(calc(150vw * var(--dir-x)), calc(150vh * var(--dir-y))); }
+      50%  { transform: translate(calc(150vw * var(--dir-x) * -1), calc(150vh * var(--dir-y) * -1)); }
+      75%  { transform: translate(calc(150vw * var(--dir-x)), calc(150vh * var(--dir-y))); }
+      100% { transform: translate(0, 0); }
     }
     @keyframes twinkle {
-      0%, 100% { opacity: 0.3; transform: scale(0.8); }
-      50% { opacity: 1; transform: scale(1.4); }
+      0%, 100% { opacity: 0.3; transform: scale(0.7); }
+      50%      { opacity: 1; transform: scale(1.5); }
     }
     @keyframes glow {
       from { text-shadow: 0 0 30px #00aaff; }
-      to { text-shadow: 0 0 120px #00aaff; }
+      to   { text-shadow: 0 0 120px #00aaff; }
     }
   </style>
 </head>
@@ -121,42 +120,37 @@
   <script>
     const particlesContainer = document.getElementById('particles');
     
-    // 產生 180 顆粒子
-    for (let i = 0; i < 180; i++) {
+    // 產生約 150 顆粒子
+    for (let i = 0; i < 150; i++) {
       const p = document.createElement('div');
       p.className = 'particle';
       
-      // 隨機大小 (4~7px)
-      const size = 4 + Math.random() * 3;
+      // 隨機大小 4~8px
+      const size = 4 + Math.random() * 4;
       p.style.width = size + 'px';
       p.style.height = size + 'px';
       
       // 隨機初始位置
-      const startX = Math.random() * 100 + 'vw';
-      const startY = Math.random() * 100 + 'vh';
-      p.style.left = startX;
-      p.style.top = startY;
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.top = Math.random() * 100 + 'vh';
       
-      // 隨機顏色：藍色或淡紫色
-      const colors = ['#00aaff', '#3399ff', '#66ccff', '#aa88ff', '#cc99ff', '#ddbbff'];
+      // 隨機顏色（藍 ~ 淡紫）
+      const colors = ['#00aaff', '#33ccff', '#66ddff', '#aa88ff', '#bb99ff', '#cc99ff'];
       p.style.background = colors[Math.floor(Math.random() * colors.length)];
       
       // 隨機亮度
-      const opacity = 0.25 + Math.random() * 0.75; // 0.25 ~ 1.0
-      p.style.opacity = opacity;
+      p.style.opacity = 0.25 + Math.random() * 0.75;
+      
+      // 隨機移動方向（正負）
+      const dirX = Math.random() > 0.5 ? 1 : -1;
+      const dirY = Math.random() > 0.5 ? 1 : -1;
+      p.style.setProperty('--dir-x', dirX);
+      p.style.setProperty('--dir-y', dirY);
       
       // 隨機動畫時長與延遲
-      const duration = 6 + Math.random() * 8; // 6~14秒
-      p.style.animationDuration = duration + 's, ' + (2 + Math.random() * 2) + 's';
-      p.style.animationDelay = Math.random() * duration + 's, ' + Math.random() * 2 + 's';
-      
-      // 隨機移動方向與距離
-      const dx = (Math.random() * 400 - 200) + 'vw';
-      const dy = (Math.random() * 400 - 200 - 100) + 'vh'; // 偏向上移動
-      p.style.setProperty('--start-x', '0vw');
-      p.style.setProperty('--start-y', '0vh');
-      p.style.setProperty('--end-x', dx);
-      p.style.setProperty('--end-y', dy);
+      const duration = 8 + Math.random() * 6; // 8~14秒
+      p.style.animationDuration = duration + 's, ' + (2.5 + Math.random() * 2) + 's';
+      p.style.animationDelay = Math.random() * duration + 's, ' + Math.random() * 3 + 's';
       
       particlesContainer.appendChild(p);
     }
@@ -167,7 +161,9 @@
       if (!raw) return alert('URLを入力してください');
 
       let url = raw.startsWith('http') ? raw : 'https://' + raw;
-      window.location.href = 'https://ituyama-proxy.onrender.com/' + url;
+      
+      // 使用 replace 方式跳轉，盡量不產生新歷史記錄
+      window.location.replace('https://ituyama-proxy.onrender.com/' + url);
     }
 
     document.querySelector('input').addEventListener('keydown', e => {
