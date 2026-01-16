@@ -4,13 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   
-  <!-- 偽裝成 Google 樣子 -->
+  <!-- 偽裝成 Google -->
   <link rel="icon" href="https://www.google.com/favicon.ico" type="image/x-icon" />
   <title>Google</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&display=swap" rel="stylesheet"/>
 
   <style>
+    /* 你的粒子 + 藍色光暈樣式維持不變 */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       height: 100vh;
@@ -80,15 +81,19 @@
     <input 
       type="text" 
       class="input-box" 
-      placeholder="URLを入力してください（例：youtube.com）" 
+      placeholder="輸入 youtube.com 進入主頁，然後用 YouTube 搜尋" 
       autofocus
     />
 
     <div class="btn-box" onclick="go()">サイトに行く</div>
+
+    <p style="margin-top: 2rem; font-size: 1.2rem; color: #aaa;">
+      提示：先輸入 youtube.com 進入主頁，然後在 YouTube 自己的搜尋欄輸入關鍵字，就能正常搜尋 + 看影片了！
+    </p>
   </div>
 
   <script>
-    // 產生粒子
+    // 產生粒子（維持原樣）
     const starsContainer = document.getElementById('stars');
     for (let i = 0; i < 120; i++) {
       const star = document.createElement('div');
@@ -110,21 +115,13 @@
         return;
       }
 
-      // 自動補完整網址
-      let url = raw;
-      if (!url.startsWith('http')) {
-        if (url.includes('youtube.com') || url.includes('youtu.be')) {
-          url = 'https://' + url;
-        } else {
-          url = 'https://' + url;
-        }
-      }
+      // 自動補 https://
+      let url = raw.startsWith('http') ? raw : 'https://' + raw;
 
-      // 關鍵：使用 replace() 不留中間歷史記錄
+      // 使用 replace() 不留中間歷史記錄
       window.location.replace('https://ituyama-proxy.onrender.com/' + url);
     }
 
-    // Enter 鍵觸發
     document.querySelector('input').addEventListener('keydown', e => {
       if (e.key === 'Enter') {
         e.preventDefault();
