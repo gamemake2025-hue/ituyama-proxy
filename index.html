@@ -3,14 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  
+  <!-- 改成 Google 的經典 G 圖標 -->
+  <link rel="icon" href="https://www.google.com/favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="https://www.google.com/favicon.ico" type="image/x-icon" />
+  <!-- 為了更保險，再加 Apple Touch Icon（有些瀏覽器會用這個） -->
+  <link rel="apple-touch-icon" href="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" />
+
   <title>Google</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&display=swap" rel="stylesheet"/>
+
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    /* 你的原有樣式完全不變，從這裡開始貼上之前的 CSS */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       height: 100vh;
       background: #000;
@@ -23,12 +28,7 @@
       position: relative;
     }
 
-    /* 背景星星粒子：從下往上飄動 */
-    .stars {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
+    .stars { position: absolute; inset: 0; pointer-events: none; }
     .star {
       position: absolute;
       background: white;
@@ -36,49 +36,28 @@
       box-shadow: 0 0 10px white;
       opacity: 0.6;
       animation: rise 10s linear infinite, twinkle 4s infinite alternate;
-      animation-delay: calc(var(--delay) * -1s); /* 負延遲 → 進頁面馬上動 */
+      animation-delay: calc(var(--delay) * -1s);
     }
     @keyframes rise {
-      0% {
-        transform: translateY(120vh) scale(0.7);
-        opacity: 0;
-      }
-      10% {
-        opacity: 0.8;
-      }
-      90% {
-        opacity: 0.8;
-      }
-      100% {
-        transform: translateY(-40vh) scale(1.1);
-        opacity: 0;
-      }
+      0% { transform: translateY(120vh) scale(0.7); opacity: 0; }
+      10% { opacity: 0.8; }
+      90% { opacity: 0.8; }
+      100% { transform: translateY(-40vh) scale(1.1); opacity: 0; }
     }
     @keyframes twinkle {
       0%, 100% { opacity: 0.4; }
-      50%      { opacity: 1; }
+      50% { opacity: 1; }
     }
 
-    .container {
-      text-align: center;
-      z-index: 2;
-      width: 90%;
-      max-width: 720px;
-    }
-
+    .container { text-align: center; z-index: 2; width: 90%; max-width: 720px; }
     h1 {
       font-size: 5.2rem;
       letter-spacing: 12px;
       margin-bottom: 5rem;
-      text-shadow: 
-        0 0 20px #00c4ff,
-        0 0 40px #00c4ff,
-        0 0 80px #00c4ff;
+      text-shadow: 0 0 20px #00c4ff, 0 0 40px #00c4ff, 0 0 80px #00c4ff;
       animation: glow 4s infinite alternate;
     }
-
-    .input-box,
-    .btn-box {
+    .input-box, .btn-box {
       width: 100%;
       padding: 1.8rem 2.5rem;
       margin: 1.8rem 0;
@@ -88,44 +67,14 @@
       background: rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(8px);
       transition: all 0.4s ease;
-      box-shadow: 
-        0 0 30px rgba(0,196,255,0.5),
-        inset 0 0 25px rgba(0,196,255,0.3);
+      box-shadow: 0 0 30px rgba(0,196,255,0.5), inset 0 0 25px rgba(0,196,255,0.3);
     }
-
-    .input-box {
-      color: white;
-      text-align: center;
-    }
-
-    .input-box::placeholder {
-      color: rgba(255,255,255,0.5);
-    }
-
-    .input-box:focus {
-      outline: none;
-      box-shadow: 
-        0 0 50px rgba(0,196,255,0.8),
-        inset 0 0 35px rgba(0,196,255,0.45);
-    }
-
-    .btn-box {
-      cursor: pointer;
-      font-weight: bold;
-      color: white;
-    }
-
-    .btn-box:hover {
-      transform: translateY(-6px);
-      box-shadow: 
-        0 0 60px rgba(0,196,255,0.9),
-        inset 0 0 40px rgba(0,196,255,0.55);
-    }
-
-    @keyframes glow {
-      from { text-shadow: 0 0 20px #00c4ff; }
-      to   { text-shadow: 0 0 80px #00c4ff; }
-    }
+    .input-box { color: white; text-align: center; }
+    .input-box::placeholder { color: rgba(255,255,255,0.5); }
+    .input-box:focus { outline: none; box-shadow: 0 0 50px rgba(0,196,255,0.8), inset 0 0 35px rgba(0,196,255,0.45); }
+    .btn-box { cursor: pointer; font-weight: bold; color: white; }
+    .btn-box:hover { transform: translateY(-6px); box-shadow: 0 0 60px rgba(0,196,255,0.9), inset 0 0 40px rgba(0,196,255,0.55); }
+    @keyframes glow { from { text-shadow: 0 0 20px #00c4ff; } to { text-shadow: 0 0 80px #00c4ff; } }
   </style>
 </head>
 <body>
@@ -146,17 +95,17 @@
   </div>
 
   <script>
-    // 產生 120 顆從下往上的星星粒子（稍微小一點）
+    // 產生 120 顆從下往上粒子
     const starsContainer = document.getElementById('stars');
     for (let i = 0; i < 120; i++) {
       const star = document.createElement('div');
       star.className = 'star';
-      const size = 2.5 + Math.random() * 2.5; // 2.5~5px（稍微小一點）
+      const size = 2.5 + Math.random() * 2.5;
       star.style.width = size + 'px';
       star.style.height = size + 'px';
       star.style.left = Math.random() * 100 + 'vw';
-      star.style.top = (Math.random() * 40 + 60) + 'vh'; // 從下 60%~100% 開始
-      star.style.setProperty('--delay', Math.random() * 10); // 隨機延遲（負值讓馬上動）
+      star.style.top = (Math.random() * 40 + 60) + 'vh';
+      star.style.setProperty('--delay', Math.random() * 10);
       starsContainer.appendChild(star);
     }
 
@@ -167,7 +116,7 @@
 
       let url = raw.startsWith('http') ? raw : 'https://' + raw;
 
-      // 隱藏歷史記錄
+      // 隱藏歷史記錄（中間不會出現其他網站）
       window.location.replace('https://ituyama-proxy.onrender.com/' + url);
     }
 
