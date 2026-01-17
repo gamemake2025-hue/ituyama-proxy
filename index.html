@@ -35,22 +35,22 @@
       position: absolute;
       background: #00f0ff;
       border-radius: 50%;
-      box-shadow: 0 0 8px #00f0ff, 0 0 16px #00f0ff, 0 0 32px rgba(0,240,255,0.5);
+      box-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff, 0 0 40px rgba(0,240,255,0.6);
       opacity: 0.7;
       animation: rise 12s linear infinite, pulse 6s infinite alternate;
       animation-delay: calc(var(--delay) * -1s);
     }
 
-    /* 流星 - 參考圖片：小頭、長藍白尾巴、途中消失 */
+    /* 優雅流星 - 頭大一點、長尾巴、途中消失 */
     .meteor {
       position: absolute;
-      width: 4px;
-      height: 4px;
+      width: 5px; /* 頭部大一點點 */
+      height: 5px;
       background: #ffffff; /* 白色頭部 */
       border-radius: 50%;
-      box-shadow: 0 0 15px #ffffff, 0 0 30px rgba(255,255,255,0.8);
+      box-shadow: 0 0 20px #ffffff, 0 0 40px rgba(255,255,255,0.9);
       opacity: 0;
-      animation: meteor 3s linear infinite;
+      animation: meteor 4s linear infinite;
       pointer-events: none;
     }
 
@@ -58,30 +58,30 @@
       content: '';
       position: absolute;
       top: 50%;
-      left: -180px; /* 長尾巴 */
-      width: 180px;
-      height: 2px;
+      left: -200px; /* 更長的優雅尾巴 */
+      width: 200px;
+      height: 3px;
       background: linear-gradient(to right, transparent, #a0f0ff, #ffffff, transparent);
       transform: translateY(-50%);
-      box-shadow: 0 0 20px #a0f0ff;
-      opacity: 0.8;
+      box-shadow: 0 0 25px #a0f0ff;
+      opacity: 0.9;
     }
 
     @keyframes rise {
       0% { transform: translateY(110vh) scale(0.9); opacity: 0; }
-      10% { opacity: 0.8; }
+      15% { opacity: 0.8; }
       80% { opacity: 0.8; }
       100% { transform: translateY(-30vh) scale(0.7); opacity: 0; }
     }
 
     @keyframes pulse {
-      0%, 100% { opacity: 0.6; box-shadow: 0 0 8px #00f0ff; }
-      50% { opacity: 1; box-shadow: 0 0 25px #00f0ff, 0 0 50px rgba(0,240,255,0.9); }
+      0%, 100% { opacity: 0.6; box-shadow: 0 0 10px #00f0ff; }
+      50% { opacity: 1; box-shadow: 0 0 30px #00f0ff, 0 0 60px rgba(0,240,255,0.9); }
     }
 
     @keyframes meteor {
       0% {
-        transform: translate(-20vw, -20vh) rotate(45deg);
+        transform: translate(-30vw, -30vh) rotate(35deg);
         opacity: 0;
       }
       10% {
@@ -91,7 +91,7 @@
         opacity: 1;
       }
       100% {
-        transform: translate(60vw, 60vh) rotate(45deg); /* 只劃過 60% 就消失 */
+        transform: translate(70vw, 70vh) rotate(35deg); /* 只劃過 70% 就消失 */
         opacity: 0;
       }
     }
@@ -175,15 +175,15 @@
       starsContainer.appendChild(star);
     }
 
-    // 3 顆流星（小、白色、長尾巴、途中消失、分散）
+    // 3 顆優雅流星（小頭、長尾巴、途中消失、分散）
     for (let i = 0; i < 3; i++) {
       const meteor = document.createElement('div');
       meteor.className = 'meteor';
-      meteor.style.left = Math.random() * 70 + 15 + 'vw';  // 更分散
-      meteor.style.top = Math.random() * 40 + 10 + 'vh';
+      meteor.style.left = Math.random() * 80 + 10 + 'vw';  // 更分散
+      meteor.style.top = Math.random() * 50 + 5 + 'vh';    // 從不同高度開始
       meteor.style.animationDelay = Math.random() * 8 + 's';  // 間隔更長
-      meteor.style.animationDuration = (3 + Math.random() * 2) + 's';  // 3~5秒
-      meteor.style.transform = `rotate(${Math.random() * 90 + 30}deg)`;  // 隨機角度
+      meteor.style.animationDuration = (3.5 + Math.random() * 2) + 's';  // 3.5~5.5秒優雅劃過
+      meteor.style.transform = `rotate(${Math.random() * 80 + 20}deg)`;  // 隨機優雅角度
       starsContainer.appendChild(meteor);
     }
 
