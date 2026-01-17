@@ -24,7 +24,6 @@
       position: relative;
     }
 
-    /* 粒子與流星層 - 最底層 */
     .stars {
       position: absolute;
       inset: 0;
@@ -42,16 +41,16 @@
       animation-delay: calc(var(--delay) * -1s);
     }
 
-    /* 流星 - 更大、有明顯尾巴線 */
+    /* 流星 - 更小、白色、途中消失、分散 */
     .meteor {
       position: absolute;
-      width: 6px; /* 頭部更大 */
-      height: 6px;
-      background: #00f0ff;
+      width: 4px; /* 小一點 */
+      height: 4px;
+      background: #ffffff; /* 純白 */
       border-radius: 50%;
-      box-shadow: 0 0 20px #00f0ff, 0 0 40px rgba(0,240,255,0.9);
+      box-shadow: 0 0 15px #ffffff, 0 0 30px rgba(255,255,255,0.8);
       opacity: 0;
-      animation: meteor 3s linear infinite;
+      animation: meteor 2.5s linear infinite;
       pointer-events: none;
     }
 
@@ -59,12 +58,12 @@
       content: '';
       position: absolute;
       top: 50%;
-      left: -150px; /* 尾巴長度 */
-      width: 150px;
+      left: -120px; /* 尾巴長度適中 */
+      width: 120px;
       height: 2px;
-      background: linear-gradient(to right, transparent, #00f0ff, transparent);
+      background: linear-gradient(to right, transparent, #ffffff, transparent);
       transform: translateY(-50%);
-      box-shadow: 0 0 15px #00f0ff;
+      box-shadow: 0 0 12px #ffffff;
       opacity: 0.7;
     }
 
@@ -85,19 +84,18 @@
         transform: translate(-20vw, -20vh) rotate(45deg);
         opacity: 0;
       }
-      5% {
+      10% {
         opacity: 1;
       }
-      95% {
+      80% {
         opacity: 1;
       }
       100% {
-        transform: translate(120vw, 120vh) rotate(45deg);
+        transform: translate(80vw, 80vh) rotate(45deg); /* 只劃過 80% 就消失 */
         opacity: 0;
       }
     }
 
-    /* 前景內容 - 高 z-index */
     .container {
       text-align: center;
       z-index: 10;
@@ -163,7 +161,7 @@
   </div>
 
   <script>
-    // 一般粒子（從下往上、快一點）
+    // 一般粒子（維持之前設定）
     const starsContainer = document.getElementById('stars');
     for (let i = 0; i < 90; i++) {
       const star = document.createElement('div');
@@ -177,14 +175,14 @@
       starsContainer.appendChild(star);
     }
 
-    // 5 顆漂亮流星（更大 + 明顯尾巴線）
-    for (let i = 0; i < 5; i++) {
+    // 3 顆漂亮白色流星（更大頭部 + 明顯尾巴線 + 途中消失）
+    for (let i = 0; i < 3; i++) {
       const meteor = document.createElement('div');
       meteor.className = 'meteor';
-      meteor.style.left = Math.random() * 100 + 'vw';
-      meteor.style.top = Math.random() * 30 + 'vh';  // 從畫面上方開始劃過
-      meteor.style.animationDelay = Math.random() * 6 + 's';  // 隨機出現時間
-      meteor.style.animationDuration = (2 + Math.random() * 2) + 's';  // 2~4秒快速劃過
+      meteor.style.left = Math.random() * 80 + 10 + 'vw';  // 更分散
+      meteor.style.top = Math.random() * 40 + 10 + 'vh';   // 從不同高度開始
+      meteor.style.animationDelay = Math.random() * 5 + 's';
+      meteor.style.animationDuration = (2.5 + Math.random() * 1.5) + 's';  // 2.5~4秒
       starsContainer.appendChild(meteor);
     }
 
