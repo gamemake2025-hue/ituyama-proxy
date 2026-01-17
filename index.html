@@ -41,14 +41,14 @@
       animation-delay: calc(var(--delay) * -1s);
     }
 
-    /* 優雅流星 - 頭大一點、長尾巴、途中消失 */
+    /* 優雅流星 - 頭體完全連起來、長尾巴、途中消失 */
     .meteor {
       position: absolute;
-      width: 5px; /* 頭部大一點點 */
-      height: 5px;
+      width: 6px; /* 頭部大一點點 */
+      height: 6px;
       background: #ffffff; /* 白色頭部 */
       border-radius: 50%;
-      box-shadow: 0 0 20px #ffffff, 0 0 40px rgba(255,255,255,0.9);
+      box-shadow: 0 0 25px #ffffff, 0 0 50px rgba(255,255,255,0.9);
       opacity: 0;
       animation: meteor 4s linear infinite;
       pointer-events: none;
@@ -58,13 +58,13 @@
       content: '';
       position: absolute;
       top: 50%;
-      left: -200px; /* 更長的優雅尾巴 */
-      width: 200px;
+      left: -220px; /* 更長的優雅尾巴 */
+      width: 220px;
       height: 3px;
-      background: linear-gradient(to right, transparent, #a0f0ff, #ffffff, transparent);
+      background: linear-gradient(to right, transparent, #a0f0ff 20%, #ffffff 40%, #a0f0ff 60%, transparent);
       transform: translateY(-50%);
-      box-shadow: 0 0 25px #a0f0ff;
-      opacity: 0.9;
+      box-shadow: 0 0 30px #a0f0ff, 0 0 60px rgba(160,240,255,0.7);
+      opacity: 0.85;
     }
 
     @keyframes rise {
@@ -81,7 +81,7 @@
 
     @keyframes meteor {
       0% {
-        transform: translate(-30vw, -30vh) rotate(35deg);
+        transform: translate(-30vw, -30vh) rotate(40deg);
         opacity: 0;
       }
       10% {
@@ -91,7 +91,7 @@
         opacity: 1;
       }
       100% {
-        transform: translate(70vw, 70vh) rotate(35deg); /* 只劃過 70% 就消失 */
+        transform: translate(70vw, 70vh) rotate(40deg); /* 只劃過 70% 就消失 */
         opacity: 0;
       }
     }
@@ -175,14 +175,14 @@
       starsContainer.appendChild(star);
     }
 
-    // 3 顆優雅流星（小頭、長尾巴、途中消失、分散）
+    // 3 顆優雅流星（頭體完全連起來、長尾巴、途中消失、分散）
     for (let i = 0; i < 3; i++) {
       const meteor = document.createElement('div');
       meteor.className = 'meteor';
       meteor.style.left = Math.random() * 80 + 10 + 'vw';  // 更分散
-      meteor.style.top = Math.random() * 50 + 5 + 'vh';    // 從不同高度開始
-      meteor.style.animationDelay = Math.random() * 8 + 's';  // 間隔更長
-      meteor.style.animationDuration = (3.5 + Math.random() * 2) + 's';  // 3.5~5.5秒優雅劃過
+      meteor.style.top = Math.random() * 50 + 5 + 'vh';
+      meteor.style.animationDelay = Math.random() * 10 + 's';  // 間隔更長，避免同時出現
+      meteor.style.animationDuration = (4 + Math.random() * 2) + 's';  // 4~6秒優雅劃過
       meteor.style.transform = `rotate(${Math.random() * 80 + 20}deg)`;  // 隨機優雅角度
       starsContainer.appendChild(meteor);
     }
