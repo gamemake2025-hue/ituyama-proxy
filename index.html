@@ -34,37 +34,37 @@
 
     .star {
       position: absolute;
-      background: #00eaff; /* 亮藍色星星 */
+      background: #00f0ff; /* 亮藍色，參考圖片 */
       border-radius: 50%;
       box-shadow: 
-        0 0 10px #00eaff,
-        0 0 20px #00eaff,
-        0 0 40px rgba(0,234,255,0.6);
-      opacity: 0.8;
-      animation: rise 15s linear infinite, pulse 5s infinite alternate;
-      animation-delay: calc(var(--delay) * -1s); /* 負延遲 → 一進頁面馬上動 */
+        0 0 8px #00f0ff,
+        0 0 16px #00f0ff,
+        0 0 32px rgba(0,240,255,0.6);
+      opacity: 0.7;
+      animation: rise 18s linear infinite, pulse 6s infinite alternate;
+      animation-delay: calc(var(--delay) * -1s); /* 負延遲 → 一載入就動 */
     }
 
     @keyframes rise {
       0% {
-        transform: translateY(110vh) scale(0.8);
+        transform: translateY(110vh) scale(0.9);
         opacity: 0;
       }
-      10% {
-        opacity: 0.9;
+      15% {
+        opacity: 0.8;
       }
       80% {
-        opacity: 0.9;
+        opacity: 0.8;
       }
       100% {
-        transform: translateY(-30vh) scale(0.6); /* 慢慢縮小 */
-        opacity: 0; /* 漸漸淡出，融入夜空 */
+        transform: translateY(-30vh) scale(0.7); /* 慢慢縮小 */
+        opacity: 0; /* 漸漸淡出，像融入夜空 */
       }
     }
 
     @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 10px #00eaff; }
-      50% { box-shadow: 0 0 30px #00eaff, 0 0 60px rgba(0,234,255,0.9); } /* 呼吸燈，更自然亮 */
+      0%, 100% { opacity: 0.6; box-shadow: 0 0 8px #00f0ff; }
+      50% { opacity: 1; box-shadow: 0 0 20px #00f0ff, 0 0 40px rgba(0,240,255,0.8); } /* 呼吸燈，更亮 */
     }
 
     /* 前景內容 - 高 z-index */
@@ -80,7 +80,7 @@
       font-size: 5.2rem;
       letter-spacing: 12px;
       margin-bottom: 5rem;
-      text-shadow: 0 0 20px #00eaff, 0 0 40px #00eaff, 0 0 80px #00eaff;
+      text-shadow: 0 0 20px #00f0ff, 0 0 40px #00f0ff, 0 0 80px #00f0ff;
       animation: glow 4s infinite alternate;
     }
 
@@ -90,24 +90,24 @@
       margin: 1.8rem 0;
       font-size: 1.9rem;
       border-radius: 16px;
-      border: 2px solid #00eaff;
+      border: 2px solid #00f0ff;
       background: rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(8px);
       transition: all 0.4s ease;
-      box-shadow: 0 0 30px rgba(0,234,255,0.5), inset 0 0 25px rgba(0,234,255,0.3);
+      box-shadow: 0 0 30px rgba(0,240,255,0.5), inset 0 0 25px rgba(0,240,255,0.3);
       z-index: 10;
     }
 
     .input-box { color: white; text-align: center; }
     .input-box::placeholder { color: rgba(255,255,255,0.5); }
-    .input-box:focus { outline: none; box-shadow: 0 0 50px rgba(0,234,255,0.8), inset 0 0 35px rgba(0,234,255,0.45); }
+    .input-box:focus { outline: none; box-shadow: 0 0 50px rgba(0,240,255,0.8), inset 0 0 35px rgba(0,240,255,0.45); }
 
     .btn-box { cursor: pointer; font-weight: bold; color: white; }
-    .btn-box:hover { transform: translateY(-6px); box-shadow: 0 0 60px rgba(0,234,255,0.9), inset 0 0 40px rgba(0,234,255,0.55); }
+    .btn-box:hover { transform: translateY(-6px); box-shadow: 0 0 60px rgba(0,240,255,0.9), inset 0 0 40px rgba(0,240,255,0.55); }
 
     @keyframes glow {
-      from { text-shadow: 0 0 20px #00eaff; }
-      to   { text-shadow: 0 0 80px #00eaff; }
+      from { text-shadow: 0 0 20px #00f0ff; }
+      to   { text-shadow: 0 0 80px #00f0ff; }
     }
   </style>
 </head>
@@ -133,17 +133,17 @@
   </div>
 
   <script>
-    // 產生藍色、更亮、更自然的粒子（從下往上移動、馬上開始動、慢慢消失）
+    // 產生粒子：大小參考圖片（3~6px）、數量稀疏（60顆）、從下往上、馬上動、慢慢消失
     const starsContainer = document.getElementById('stars');
-    for (let i = 0; i < 70; i++) {  // 70顆，適中數量，像夜空
+    for (let i = 0; i < 60; i++) {  // 60顆，像夜空稀疏星星
       const star = document.createElement('div');
       star.className = 'star';
-      const size = 3 + Math.random() * 3;  // 3~6px，稍微大一點但不會太大
+      const size = 3 + Math.random() * 3;  // 3~6px，參考圖片大小
       star.style.width = size + 'px';
       star.style.height = size + 'px';
       star.style.left = Math.random() * 100 + 'vw';
-      star.style.top = (Math.random() * 40 + 60) + 'vh';  // 從下半部開始
-      star.style.setProperty('--delay', Math.random() * 12);  // 負延遲讓馬上動
+      star.style.top = (Math.random() * 40 + 60) + 'vh';  // 從下 60%~100% 開始
+      star.style.setProperty('--delay', Math.random() * 15);  // 負延遲讓馬上動
       starsContainer.appendChild(star);
     }
 
