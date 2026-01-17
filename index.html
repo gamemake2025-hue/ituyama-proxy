@@ -34,14 +34,14 @@
 
     .star {
       position: absolute;
-      background: #00eaff; /* 更亮的藍色 */
+      background: #00eaff; /* 亮藍色星星 */
       border-radius: 50%;
       box-shadow: 
-        0 0 12px #00eaff,
-        0 0 25px #00eaff,
-        0 0 50px rgba(0,234,255,0.7);
+        0 0 10px #00eaff,
+        0 0 20px #00eaff,
+        0 0 40px rgba(0,234,255,0.6);
       opacity: 0.8;
-      animation: rise 10s linear infinite, fadePulse 4s infinite alternate;
+      animation: rise 15s linear infinite, pulse 5s infinite alternate;
       animation-delay: calc(var(--delay) * -1s); /* 負延遲 → 一進頁面馬上動 */
     }
 
@@ -53,18 +53,18 @@
       10% {
         opacity: 0.9;
       }
-      85% {
+      80% {
         opacity: 0.9;
       }
       100% {
-        transform: translateY(-20vh) scale(0.5); /* 慢慢收縮 */
-        opacity: 0; /* 慢慢消失 */
+        transform: translateY(-30vh) scale(0.6); /* 慢慢縮小 */
+        opacity: 0; /* 漸漸淡出，融入夜空 */
       }
     }
 
-    @keyframes fadePulse {
-      0%, 100% { opacity: 0.6; box-shadow: 0 0 12px #00eaff; }
-      50% { opacity: 1; box-shadow: 0 0 40px #00eaff, 0 0 70px rgba(0,234,255,0.9); } /* 更亮的呼吸 */
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 10px #00eaff; }
+      50% { box-shadow: 0 0 30px #00eaff, 0 0 60px rgba(0,234,255,0.9); } /* 呼吸燈，更自然亮 */
     }
 
     /* 前景內容 - 高 z-index */
@@ -133,17 +133,17 @@
   </div>
 
   <script>
-    // 產生藍色、更亮、更科幻的粒子（從下往上移動、馬上開始動、慢慢消失）
+    // 產生藍色、更亮、更自然的粒子（從下往上移動、馬上開始動、慢慢消失）
     const starsContainer = document.getElementById('stars');
-    for (let i = 0; i < 90; i++) {  // 90 顆，適中數量
+    for (let i = 0; i < 70; i++) {  // 70顆，適中數量，像夜空
       const star = document.createElement('div');
       star.className = 'star';
-      const size = 1.5 + Math.random() * 2.5;  // 小一點點：1.5~4px
+      const size = 3 + Math.random() * 3;  // 3~6px，稍微大一點但不會太大
       star.style.width = size + 'px';
       star.style.height = size + 'px';
       star.style.left = Math.random() * 100 + 'vw';
-      star.style.top = (Math.random() * 30 + 70) + 'vh';  // 從畫面下 70%~100% 開始
-      star.style.setProperty('--delay', Math.random() * 8);  // 負延遲讓一進頁面就動
+      star.style.top = (Math.random() * 40 + 60) + 'vh';  // 從下半部開始
+      star.style.setProperty('--delay', Math.random() * 12);  // 負延遲讓馬上動
       starsContainer.appendChild(star);
     }
 
