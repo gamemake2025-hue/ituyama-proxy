@@ -24,66 +24,63 @@
       position: relative;
     }
 
-    /* 粒子容器（層級最低，確保不遮住文字） */
+    /* 粒子層 - 最底層 */
     .stars {
       position: absolute;
       inset: 0;
       pointer-events: none;
-      z-index: 1; /* 層級低，不會蓋過文字 */
+      z-index: 1;
     }
 
-    /* 粒子樣式：藍色、更亮、帶發光尾跡 */
     .star {
       position: absolute;
-      width: 4px;
-      height: 4px;
-      background: #00d4ff; /* 亮藍色 */
+      background: #00eaff; /* 更亮的藍色 */
       border-radius: 50%;
       box-shadow: 
-        0 0 12px #00d4ff, 
-        0 0 25px #00d4ff,  /* 更亮的發光 */
-        0 0 40px rgba(0,212,255,0.6); /* 尾跡效果 */
+        0 0 12px #00eaff,
+        0 0 25px #00eaff,
+        0 0 50px rgba(0,234,255,0.7);
       opacity: 0.8;
-      animation: rise 18s linear infinite, twinkle 5s infinite alternate;
+      animation: rise 10s linear infinite, fadePulse 4s infinite alternate;
+      animation-delay: calc(var(--delay) * -1s); /* 負延遲 → 一進頁面馬上動 */
     }
 
-    /* 從下往上移動（緩慢、科幻感） */
     @keyframes rise {
       0% {
-        transform: translateY(120vh) scale(0.8);
+        transform: translateY(110vh) scale(0.8);
         opacity: 0;
       }
       10% {
         opacity: 0.9;
       }
-      90% {
+      85% {
         opacity: 0.9;
       }
       100% {
-        transform: translateY(-20vh) scale(1.2);
-        opacity: 0;
+        transform: translateY(-20vh) scale(0.5); /* 慢慢收縮 */
+        opacity: 0; /* 慢慢消失 */
       }
     }
 
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.7; box-shadow: 0 0 12px #00d4ff; }
-      50% { opacity: 1; box-shadow: 0 0 30px #00d4ff; }
+    @keyframes fadePulse {
+      0%, 100% { opacity: 0.6; box-shadow: 0 0 12px #00eaff; }
+      50% { opacity: 1; box-shadow: 0 0 40px #00eaff, 0 0 70px rgba(0,234,255,0.9); } /* 更亮的呼吸 */
     }
 
-    /* 主要內容容器（層級最高，永遠在粒子上方） */
+    /* 前景內容 - 高 z-index */
     .container {
       text-align: center;
-      position: relative;
-      z-index: 10; /* 確保文字、輸入框永遠在最上層 */
+      z-index: 10;
       width: 90%;
       max-width: 720px;
+      position: relative;
     }
 
     h1 {
       font-size: 5.2rem;
       letter-spacing: 12px;
       margin-bottom: 5rem;
-      text-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff, 0 0 80px #00d4ff;
+      text-shadow: 0 0 20px #00eaff, 0 0 40px #00eaff, 0 0 80px #00eaff;
       animation: glow 4s infinite alternate;
     }
 
@@ -93,25 +90,24 @@
       margin: 1.8rem 0;
       font-size: 1.9rem;
       border-radius: 16px;
-      border: 2px solid #00d4ff;
+      border: 2px solid #00eaff;
       background: rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(8px);
       transition: all 0.4s ease;
-      box-shadow: 0 0 30px rgba(0,212,255,0.5), inset 0 0 25px rgba(0,212,255,0.3);
-      position: relative;
-      z-index: 20; /* 輸入框永遠在上 */
+      box-shadow: 0 0 30px rgba(0,234,255,0.5), inset 0 0 25px rgba(0,234,255,0.3);
+      z-index: 10;
     }
 
     .input-box { color: white; text-align: center; }
     .input-box::placeholder { color: rgba(255,255,255,0.5); }
-    .input-box:focus { outline: none; box-shadow: 0 0 50px rgba(0,212,255,0.8), inset 0 0 35px rgba(0,212,255,0.45); }
+    .input-box:focus { outline: none; box-shadow: 0 0 50px rgba(0,234,255,0.8), inset 0 0 35px rgba(0,234,255,0.45); }
 
     .btn-box { cursor: pointer; font-weight: bold; color: white; }
-    .btn-box:hover { transform: translateY(-6px); box-shadow: 0 0 60px rgba(0,212,255,0.9), inset 0 0 40px rgba(0,212,255,0.55); }
+    .btn-box:hover { transform: translateY(-6px); box-shadow: 0 0 60px rgba(0,234,255,0.9), inset 0 0 40px rgba(0,234,255,0.55); }
 
     @keyframes glow {
-      from { text-shadow: 0 0 20px #00d4ff; }
-      to   { text-shadow: 0 0 80px #00d4ff; }
+      from { text-shadow: 0 0 20px #00eaff; }
+      to   { text-shadow: 0 0 80px #00eaff; }
     }
   </style>
 </head>
@@ -120,7 +116,7 @@
   <div class="stars" id="stars"></div>
 
   <div class="container">
-    <h1>ITUYAMAMAMA- PROXY</h1>
+    <h1>ITUYUYUYAMAMAMA-PROXY</h1>
 
     <input 
       type="text" 
@@ -132,42 +128,36 @@
     <div class="btn-box" onclick="go()">サイトに行く</div>
 
     <p style="margin-top: 2rem; font-size: 1.2rem; color: #aaa;">
-      いつ山プロキシへようこそ
+      提示：輸入 youtube.com 進入主頁後，再用 YouTube 自己的搜尋欄搜尋，就能正常使用！
     </p>
   </div>
 
   <script>
-    // 產生粒子：從下往上移動、藍色、更亮、更科幻、不要太亂
+    // 產生藍色、更亮、更科幻的粒子（從下往上移動、馬上開始動、慢慢消失）
     const starsContainer = document.getElementById('stars');
-    for (let i = 0; i < 80; i++) {  // 減少到 80 顆，避免太亂
+    for (let i = 0; i < 90; i++) {  // 90 顆，適中數量
       const star = document.createElement('div');
       star.className = 'star';
-      
-      // 更亮的藍色發光
-      star.style.background = '#00d4ff';
-      star.style.boxShadow = '0 0 15px #00d4ff, 0 0 30px #00d4ff';
-      
-      const size = 3 + Math.random() * 3; // 大小 3~6px，科幻感
+      const size = 1.5 + Math.random() * 2.5;  // 小一點點：1.5~4px
       star.style.width = size + 'px';
       star.style.height = size + 'px';
-      
       star.style.left = Math.random() * 100 + 'vw';
-      star.style.top = (Math.random() * 50 + 50) + 'vh'; // 從畫面中下部開始
-      
-      // 隨機延遲，讓移動更自然不亂
-      star.style.animationDelay = Math.random() * 15 + 's';
-      
+      star.style.top = (Math.random() * 30 + 70) + 'vh';  // 從畫面下 70%~100% 開始
+      star.style.setProperty('--delay', Math.random() * 8);  // 負延遲讓一進頁面就動
       starsContainer.appendChild(star);
     }
 
-    // 跳轉函數（維持原樣）
     function go() {
       const input = document.querySelector('input');
       let raw = input.value.trim();
-      if (!raw) return alert('URLを入力してください');
+      if (!raw) {
+        alert('URLを入力してください');
+        return;
+      }
 
       let url = raw.startsWith('http') ? raw : 'https://' + raw;
 
+      // 使用 replace() 不留中間歷史記錄
       window.location.replace('https://ituyama-proxy.onrender.com/' + url);
     }
 
