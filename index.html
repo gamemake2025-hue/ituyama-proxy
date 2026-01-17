@@ -24,7 +24,7 @@
       position: relative;
     }
 
-    /* 粒子層 - 最底層 */
+    /* 粒子與流星層 - 最底層 */
     .stars {
       position: absolute;
       inset: 0;
@@ -34,65 +34,65 @@
 
     .star {
       position: absolute;
-      background: #00f0ff; /* 亮藍色 */
+      background: #00f0ff;
       border-radius: 50%;
-      box-shadow: 
-        0 0 12px #00f0ff,
-        0 0 25px #00f0ff,
-        0 0 50px rgba(0,240,255,0.8);
+      box-shadow: 0 0 12px #00f0ff, 0 0 25px #00f0ff, 0 0 50px rgba(0,240,255,0.7);
       opacity: 0.8;
       animation: rise 8s linear infinite, pulse 5s infinite alternate;
-      animation-delay: calc(var(--delay) * -1s); /* 負延遲 → 一載入就動 */
+      animation-delay: calc(var(--delay) * -1s);
     }
 
-    /* 流星效果（快速劃過 + 尾巴） */
+    /* 流星 - 更大、有明顯尾巴線 */
     .meteor {
       position: absolute;
-      width: 2px;
-      height: 2px;
-      background: linear-gradient(to right, transparent, #00f0ff, transparent);
-      box-shadow: 0 0 20px #00f0ff;
+      width: 6px; /* 頭部更大 */
+      height: 6px;
+      background: #00f0ff;
+      border-radius: 50%;
+      box-shadow: 0 0 20px #00f0ff, 0 0 40px rgba(0,240,255,0.9);
       opacity: 0;
       animation: meteor 3s linear infinite;
-      border-radius: 50%;
       pointer-events: none;
     }
 
+    .meteor::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: -150px; /* 尾巴長度 */
+      width: 150px;
+      height: 2px;
+      background: linear-gradient(to right, transparent, #00f0ff, transparent);
+      transform: translateY(-50%);
+      box-shadow: 0 0 15px #00f0ff;
+      opacity: 0.7;
+    }
+
     @keyframes rise {
-      0% {
-        transform: translateY(110vh) scale(0.9);
-        opacity: 0;
-      }
-      10% {
-        opacity: 0.9;
-      }
-      80% {
-        opacity: 0.9;
-      }
-      100% {
-        transform: translateY(-30vh) scale(0.7);
-        opacity: 0; /* 漸漸消失 */
-      }
+      0% { transform: translateY(110vh) scale(0.9); opacity: 0; }
+      10% { opacity: 0.9; }
+      80% { opacity: 0.9; }
+      100% { transform: translateY(-30vh) scale(0.7); opacity: 0; }
     }
 
     @keyframes pulse {
       0%, 100% { opacity: 0.6; box-shadow: 0 0 12px #00f0ff; }
-      50% { opacity: 1; box-shadow: 0 0 40px #00f0ff, 0 0 80px rgba(0,240,255,1); } /* 更亮的呼吸 */
+      50% { opacity: 1; box-shadow: 0 0 40px #00f0ff, 0 0 80px rgba(0,240,255,1); }
     }
 
     @keyframes meteor {
       0% {
-        transform: translate(-10vw, -10vh) scale(1);
+        transform: translate(-20vw, -20vh) rotate(45deg);
         opacity: 0;
       }
-      10% {
+      5% {
         opacity: 1;
       }
-      90% {
+      95% {
         opacity: 1;
       }
       100% {
-        transform: translate(110vw, 110vh) scale(0.5);
+        transform: translate(120vw, 120vh) rotate(45deg);
         opacity: 0;
       }
     }
@@ -163,28 +163,28 @@
   </div>
 
   <script>
-    // 產生粒子（密度 90 顆、從下往上、馬上動、慢慢消失）
+    // 一般粒子（從下往上、快一點）
     const starsContainer = document.getElementById('stars');
     for (let i = 0; i < 90; i++) {
       const star = document.createElement('div');
       star.className = 'star';
-      const size = 3 + Math.random() * 3;  // 3~6px，像夜空星星
+      const size = 3 + Math.random() * 3;
       star.style.width = size + 'px';
       star.style.height = size + 'px';
       star.style.left = Math.random() * 100 + 'vw';
-      star.style.top = (Math.random() * 40 + 60) + 'vh';  // 下半部開始
-      star.style.setProperty('--delay', Math.random() * 10);  // 負延遲讓馬上動
+      star.style.top = (Math.random() * 40 + 60) + 'vh';
+      star.style.setProperty('--delay', Math.random() * 10);
       starsContainer.appendChild(star);
     }
 
-    // 新增 5 顆流星（快速劃過、漂亮尾巴）
+    // 5 顆漂亮流星（更大 + 明顯尾巴線）
     for (let i = 0; i < 5; i++) {
       const meteor = document.createElement('div');
       meteor.className = 'meteor';
       meteor.style.left = Math.random() * 100 + 'vw';
-      meteor.style.top = Math.random() * 50 + 'vh';
-      meteor.style.animationDelay = Math.random() * 5 + 's';  // 隨機出現
-      meteor.style.animationDuration = (2 + Math.random() * 3) + 's';  // 2~5秒快速劃過
+      meteor.style.top = Math.random() * 30 + 'vh';  // 從畫面上方開始劃過
+      meteor.style.animationDelay = Math.random() * 6 + 's';  // 隨機出現時間
+      meteor.style.animationDuration = (2 + Math.random() * 2) + 's';  // 2~4秒快速劃過
       starsContainer.appendChild(meteor);
     }
 
@@ -198,7 +198,6 @@
 
       let url = raw.startsWith('http') ? raw : 'https://' + raw;
 
-      // 使用 replace() 不留中間歷史記錄
       window.location.replace('https://ituyama-proxy.onrender.com/' + url);
     }
 
