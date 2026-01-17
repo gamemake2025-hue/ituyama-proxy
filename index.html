@@ -24,6 +24,7 @@
       position: relative;
     }
 
+    /* 粒子層 - 最底層 */
     .stars {
       position: absolute;
       inset: 0;
@@ -33,45 +34,32 @@
 
     .star {
       position: absolute;
-      background: #00f0ff;
+      background: #00f0ff; /* 亮藍色 */
       border-radius: 50%;
-      box-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff, 0 0 40px rgba(0,240,255,0.6);
-      opacity: 0.7;
-      animation: rise 12s linear infinite, pulse 6s infinite alternate;
-      animation-delay: calc(var(--delay) * -1s);
-    }
-
-    /* 優雅流星 - 頭體完全連起來、長尾巴、途中消失 */
-    .meteor {
-      position: absolute;
-      width: 6px; /* 頭部大一點點 */
-      height: 6px;
-      background: #ffffff; /* 白色頭部 */
-      border-radius: 50%;
-      box-shadow: 0 0 25px #ffffff, 0 0 50px rgba(255,255,255,0.9);
-      opacity: 0;
-      animation: meteor 4s linear infinite;
-      pointer-events: none;
-    }
-
-    .meteor::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: -220px; /* 更長的優雅尾巴 */
-      width: 220px;
-      height: 3px;
-      background: linear-gradient(to right, transparent, #a0f0ff 20%, #ffffff 40%, #a0f0ff 60%, transparent);
-      transform: translateY(-50%);
-      box-shadow: 0 0 30px #a0f0ff, 0 0 60px rgba(160,240,255,0.7);
-      opacity: 0.85;
+      box-shadow:
+        0 0 10px #00f0ff,
+        0 0 20px #00f0ff,
+        0 0 40px rgba(0,240,255,0.6);
+      opacity: 0.8;
+      animation: rise 6s linear infinite, pulse 6s infinite alternate; /* 上升速度加快到 6秒（原 15秒） */
+      animation-delay: calc(var(--delay) * -1s); /* 負延遲 → 一載入就動 */
     }
 
     @keyframes rise {
-      0% { transform: translateY(110vh) scale(0.9); opacity: 0; }
-      15% { opacity: 0.8; }
-      80% { opacity: 0.8; }
-      100% { transform: translateY(-30vh) scale(0.7); opacity: 0; }
+      0% {
+        transform: translateY(110vh) scale(0.9);
+        opacity: 0;
+      }
+      15% {
+        opacity: 0.8;
+      }
+      80% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(-30vh) scale(0.7); /* 慢慢縮小 */
+        opacity: 0; /* 漸漸淡出 */
+      }
     }
 
     @keyframes pulse {
@@ -79,23 +67,7 @@
       50% { opacity: 1; box-shadow: 0 0 30px #00f0ff, 0 0 60px rgba(0,240,255,0.9); }
     }
 
-    @keyframes meteor {
-      0% {
-        transform: translate(-30vw, -30vh) rotate(40deg);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;
-      }
-      70% {
-        opacity: 1;
-      }
-      100% {
-        transform: translate(70vw, 70vh) rotate(40deg); /* 只劃過 70% 就消失 */
-        opacity: 0;
-      }
-    }
-
+    /* 前景內容 - 高 z-index */
     .container {
       text-align: center;
       z-index: 10;
@@ -135,7 +107,7 @@
 
     @keyframes glow {
       from { text-shadow: 0 0 20px #00f0ff; }
-      to   { text-shadow: 0 0 80px #00f0ff; }
+      to { text-shadow: 0 0 80px #00f0ff; }
     }
   </style>
 </head>
@@ -144,7 +116,7 @@
   <div class="stars" id="stars"></div>
 
   <div class="container">
-    <h1>ITUYUYUYAMAMAMA-PROXY</h1>
+    <h1>ITUYAMAMAMA-PROXY</h1>
 
     <input 
       type="text" 
@@ -156,14 +128,14 @@
     <div class="btn-box" onclick="go()">サイトに行く</div>
 
     <p style="margin-top: 2rem; font-size: 1.2rem; color: #aaa;">
-      提示：輸入 youtube.com 進入主頁後，再用 YouTube 自己的搜尋欄搜尋，就能正常使用！
+      いつ山プロキシへようこそ！
     </p>
   </div>
 
   <script>
-    // 一般粒子（夜空星星）
+    // 產生粒子（密度 90 顆、大小 3~6px、從下往上、馬上動、慢慢消失）
     const starsContainer = document.getElementById('stars');
-    for (let i = 0; i < 70; i++) {
+    for (let i = 0; i < 90; i++) {
       const star = document.createElement('div');
       star.className = 'star';
       const size = 3 + Math.random() * 3;
@@ -175,18 +147,6 @@
       starsContainer.appendChild(star);
     }
 
-    // 3 顆優雅流星（頭體完全連起來、長尾巴、途中消失、分散）
-    for (let i = 0; i < 3; i++) {
-      const meteor = document.createElement('div');
-      meteor.className = 'meteor';
-      meteor.style.left = Math.random() * 80 + 10 + 'vw';  // 更分散
-      meteor.style.top = Math.random() * 50 + 5 + 'vh';
-      meteor.style.animationDelay = Math.random() * 10 + 's';  // 間隔更長，避免同時出現
-      meteor.style.animationDuration = (4 + Math.random() * 2) + 's';  // 4~6秒優雅劃過
-      meteor.style.transform = `rotate(${Math.random() * 80 + 20}deg)`;  // 隨機優雅角度
-      starsContainer.appendChild(meteor);
-    }
-
     function go() {
       const input = document.querySelector('input');
       let raw = input.value.trim();
@@ -194,9 +154,7 @@
         alert('URLを入力してください');
         return;
       }
-
       let url = raw.startsWith('http') ? raw : 'https://' + raw;
-
       window.location.replace('https://ituyama-proxy.onrender.com/' + url);
     }
 
