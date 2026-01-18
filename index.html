@@ -34,15 +34,15 @@
 
     .star {
       position: absolute;
-      background: #00f0ff; /* 亮藍色 */
+      background: #00f0ff;
       border-radius: 50%;
       box-shadow:
         0 0 10px #00f0ff,
         0 0 20px #00f0ff,
         0 0 40px rgba(0,240,255,0.6);
       opacity: 0.8;
-      animation: rise 6s linear infinite, pulse 10s infinite alternate; /* 上升速度加快到 6秒（原 15秒） */
-      animation-delay: calc(var(--delay) * -1s); /* 負延遲 → 一載入就動 */
+      animation: rise 6s linear infinite, pulse 6s infinite alternate;
+      animation-delay: calc(var(--delay) * -1s);
     }
 
     @keyframes rise {
@@ -57,8 +57,8 @@
         opacity: 0.8;
       }
       100% {
-        transform: translateY(-30vh) scale(0.7); /* 慢慢縮小 */
-        opacity: 0; /* 漸漸淡出 */
+        transform: translateY(-30vh) scale(0.7);
+        opacity: 0;
       }
     }
 
@@ -80,8 +80,14 @@
       font-size: 5.2rem;
       letter-spacing: 12px;
       margin-bottom: 5rem;
-      text-shadow: 0 0 20px #00f0ff, 0 0 40px #00f0ff, 0 0 80px #00f0ff;
-      animation: glow 4s infinite alternate;
+      color: #ffffff; /* 純白文字 */
+      text-shadow: 
+        0 0 20px #00f0ff,
+        0 0 50px #00f0ff,
+        0 0 80px #00f0ff,
+        0 0 120px #00f0ff,  /* 加強最外層光暈 */
+        0 0 40px rgba(0,240,255,0.8) inset;  /* 內發光效果，更醒目 */
+      animation: glow 3s infinite alternate;  /* 動畫更快、更明顯 */
     }
 
     .input-box, .btn-box {
@@ -106,8 +112,8 @@
     .btn-box:hover { transform: translateY(-6px); box-shadow: 0 0 60px rgba(0,240,255,0.9), inset 0 0 40px rgba(0,240,255,0.55); }
 
     @keyframes glow {
-      from { text-shadow: 0 0 20px #00f0ff; }
-      to { text-shadow: 0 0 80px #00f0ff; }
+      from { text-shadow: 0 0 20px #00f0ff, 0 0 50px #00f0ff, 0 0 80px #00f0ff; }
+      to   { text-shadow: 0 0 40px #00f0ff, 0 0 80px #00f0ff, 0 0 120px #00f0ff, 0 0 160px rgba(0,240,255,0.8); }
     }
   </style>
 </head>
@@ -116,7 +122,7 @@
   <div class="stars" id="stars"></div>
 
   <div class="container">
-    <h1>ITUYAMAMAMA-PROXY</h1>
+    <h1>ITUYAMAMAMA　PROXY</h1>
 
     <input 
       type="text" 
